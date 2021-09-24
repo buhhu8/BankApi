@@ -30,17 +30,8 @@ public class UserServiceImpl implements UserService {
     public void insertData(UsersEntity entity) {
        try(Session session = sessionFactory.openSession()){
             Transaction tx = session.beginTransaction();
-//            UsersEntity usersEntity = new UsersEntity();
-//            usersEntity.setId(1L);
-//            usersEntity.setFirstName("Dima");
-//            usersEntity.setLastName("Protsko");
-//            usersEntity.setMiddleName("Ale");
-//            usersEntity.setPassportSeries("4013");
-//            usersEntity.setPassportNumber("324434");
-//            usersEntity.setCreateDateUser(new Timestamp(System.currentTimeMillis()));
-
+            entity.setCreateDateUser(new Timestamp(System.currentTimeMillis()));
             session.save(entity);
-
             tx.commit();
         }
     }
@@ -49,24 +40,23 @@ public class UserServiceImpl implements UserService {
     public UsersEntity getUsers(Long id) {
 
         try(Session session = sessionFactory.openSession()){
-//            Transaction tx = session.beginTransaction();
-//
-//            UsersEntity usersEntity = new UsersEntity();
-//            usersEntity.setId(1L);
-//            usersEntity.setFirstName("Dima");
-//            usersEntity.setLastName("Protsko");
-//            usersEntity.setMiddleName("Ale");
-//            usersEntity.setPassportSeries("4013");
-//            usersEntity.setPassportNumber("324434");
-//            usersEntity.setCreateDateUser(new Timestamp(System.currentTimeMillis()));
-//            session.save(usersEntity);
-//            tx.commit();
-
             Query query = session.createQuery("from UsersEntity where id = :paramName");
             query.setParameter("paramName", id);
             return (UsersEntity) query.getSingleResult();
         }
         }
 
+    @Override
+    public List<UsersEntity> getAllUsers() {
+        try(Session session = sessionFactory.openSession()){
+            Query query = session.createQuery("from UsersEntity ");
+            List<UsersEntity> list = query.getResultList();
+            return list;
+
+        }
+
     }
+
+
+}
 

@@ -6,6 +6,9 @@ import ru.sberdorofeev.bankapi.entity.UsersEntity;
 import ru.sberdorofeev.bankapi.service.UserService;
 import ru.sberdorofeev.bankapi.service.impl.UserServiceImpl;
 
+import java.util.Collection;
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/users")
@@ -21,6 +24,11 @@ public class UserController {
     @GetMapping("/{userId}")
     public UsersEntity getUsers(@PathVariable Long userId){
             return userService.getUsers(userId);
+    }
+
+    @GetMapping
+    public Collection<UsersEntity> getAllUsers(){
+        return userService.getAllUsers();
     }
 
 }

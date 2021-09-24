@@ -2,10 +2,7 @@ package ru.sberdorofeev.bankapi.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
@@ -15,17 +12,18 @@ public class UsersEntity {
 
     @Column(name = "ID")
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "first_name")
+    @Column(name = "FIRST_NAME")
     private String firstName;
-    @Column(name = "last_name")
+    @Column(name = "LAST_NAME")
     private String lastName;
-    @Column(name="middle_name")
+    @Column(name="MIDDLE_NAME")
     private String middleName;
-    @Column(name="passport_series")
+    @Column(name="PASSPORT_SERIES")
     private String passportSeries;
-    @Column(name = "passport_number")
+    @Column(name = "PASSPORT_NUMBER")
     private String passportNumber;
-    @Column(name = "create_date_user")
+    @Column(name = "CREATE_DATA_USER")
     private Timestamp createDateUser;
 }
