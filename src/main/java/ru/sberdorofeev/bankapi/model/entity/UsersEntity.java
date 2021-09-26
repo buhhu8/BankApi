@@ -1,4 +1,4 @@
-package ru.sberdorofeev.bankapi.entity;
+package ru.sberdorofeev.bankapi.model.entity;
 
 import lombok.Data;
 

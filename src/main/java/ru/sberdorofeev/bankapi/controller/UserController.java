@@ -1,13 +1,14 @@
 package ru.sberdorofeev.bankapi.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.sberdorofeev.bankapi.entity.UsersEntity;
+import ru.sberdorofeev.bankapi.model.dto.UsersDto;
+import ru.sberdorofeev.bankapi.model.entity.UsersEntity;
 import ru.sberdorofeev.bankapi.service.UserService;
-import ru.sberdorofeev.bankapi.service.impl.UserServiceImpl;
 
 import java.util.Collection;
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -17,17 +18,21 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public void createNewUser(@RequestBody UsersEntity entity){
-        userService.insertData(entity);
+    public ResponseEntity<?> createNewUser(@RequestBody UsersDto dto){
+        if(userService.insertUser(dto)){
+          return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
     }
 
     @GetMapping("/{userId}")
-    public UsersEntity getUsers(@PathVariable Long userId){
-            return userService.getUsers(userId);
+    public UsersDto getUsers(@PathVariable Long userId){
+            return userService.getUser(userId);
     }
 
     @GetMapping
-    public Collection<UsersEntity> getAllUsers(){
+    public Collection<UsersDto> getAllUsers(){
         return userService.getAllUsers();
     }
 

@@ -20,7 +20,7 @@
 <!--        <property name="hbm2ddl.auto">create</property>-->
 
 
-        <mapping class="ru.sberdorofeev.bankapi.entity.UsersEntity" />
+        <mapping class="ru.sberdorofeev.bankapi.model.entity.UsersEntity" />
 
 
     </session-factory>
