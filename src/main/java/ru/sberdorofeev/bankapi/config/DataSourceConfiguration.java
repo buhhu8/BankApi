@@ -26,4 +26,5 @@ public class DataSourceConfiguration {
                 MigrationVersion.LATEST :
                 MigrationVersion.fromVersion(migrationVersion);
     }
+
 }

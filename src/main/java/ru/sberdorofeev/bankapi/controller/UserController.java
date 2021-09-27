@@ -19,11 +19,8 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<?> createNewUser(@RequestBody UsersDto dto){
-        if(userService.insertUser(dto)){
-          return new ResponseEntity<>(HttpStatus.CREATED);
-        }
-        else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
+        userService.insertUser(dto);
+        return new ResponseEntity<>("User was successful created",HttpStatus.CREATED);
     }
 
     @GetMapping("/{userId}")

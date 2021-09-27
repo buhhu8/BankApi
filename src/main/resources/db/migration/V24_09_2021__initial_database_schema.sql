@@ -19,14 +19,14 @@ insert into USERS_INFO values ( default,'Anton', 'Volodin', 'Nikitovich', '4008'
 insert into USERS_INFO values ( default,'Andrei', 'Mishustin', 'Dmitrich', '4409', '123456', now());
 insert into USERS_INFO values ( default,'Anatoliy', 'Efremov', 'Sergeevich', '4308', '123456', now());
 
-CREATE TABLE "invoice" (
-                           "id" long auto_increment,
-                           "bill_number" varchar UNIQUE,
-                           "cor_bill" long PRIMARY KEY,
-                           "balance" double,
-                           "create_date_bill" date,
-                           "type" varchar,
-                           "user_id" int
+CREATE TABLE "INVOICE" (
+                           "ID" long auto_increment,
+                           "BILL_NUMBER" varchar(250) primary key,
+                           "COR_BILL" varchar(250),
+                           "BALANCE" double,
+                           "BILL_CREATE_DATE" timestamp,
+                           "TYPE" varchar,
+                           "USER_ID" long
 );
 
 CREATE TABLE "card" (
@@ -52,21 +52,21 @@ CREATE TABLE "CB" (
                       PRIMARY KEY ("partner_cor_bill", "invoice_cor_bill")
 );
 
-ALTER TABLE "invoice" ADD FOREIGN KEY ("user_id") REFERENCES "USERS_INFO" ("ID");
+ALTER TABLE "INVOICE" ADD FOREIGN KEY ("USER_ID") REFERENCES "USERS_INFO" ("ID");
 
-ALTER TABLE "card" ADD FOREIGN KEY ("bill_id") REFERENCES "invoice" ("id");
+ALTER TABLE "card" ADD FOREIGN KEY ("bill_id") REFERENCES "INVOICE" ("ID");
 
 ALTER TABLE "CB" ADD FOREIGN KEY ("partner_cor_bill") REFERENCES "partner" ("partner_cor_bill");
 
-ALTER TABLE "CB" ADD FOREIGN KEY ("invoice_cor_bill") REFERENCES "invoice" ("cor_bill");
+ALTER TABLE "CB" ADD FOREIGN KEY ("invoice_cor_bill") REFERENCES "INVOICE" ("BILL_NUMBER");
 
 CREATE INDEX ON "USERS_INFO" ("CREATE_DATA_USER");
 
 CREATE UNIQUE INDEX ON "USERS_INFO" ("PASSPORT_SERIES","PASSPORT_NUMBER");
 
-CREATE INDEX ON "invoice" ("user_id");
+CREATE INDEX ON "INVOICE" ("USER_ID");
 
-CREATE INDEX ON "invoice" ("create_date_bill");
+CREATE INDEX ON "INVOICE" ("BILL_CREATE_DATE");
 
 CREATE INDEX ON "card" ("bill_id");
 

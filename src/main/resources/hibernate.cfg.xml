@@ -21,6 +21,7 @@
 
 
         <mapping class="ru.sberdorofeev.bankapi.model.entity.UsersEntity" />
+        <mapping class="ru.sberdorofeev.bankapi.model.entity.InvoiceEntity" />
 
 
     </session-factory>

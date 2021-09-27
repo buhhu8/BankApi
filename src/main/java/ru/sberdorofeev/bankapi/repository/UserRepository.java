@@ -7,9 +7,8 @@ import java.util.List;
 
 public interface UserRepository {
 
-    boolean insertData(UsersEntity entity);
+    void insertData(UsersEntity entity);
     UsersEntity getUsers(Long id);
     List<UsersEntity> getAllUsers();
-
 
 }

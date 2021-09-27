@@ -4,13 +4,14 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "USERS_INFO")
 public class UsersEntity {
 
-    @Column(name = "ID")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,4 +27,8 @@ public class UsersEntity {
     private String passportNumber;
     @Column(name = "CREATE_DATA_USER")
     private Timestamp createDateUser;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<InvoiceEntity> invoices;
+
 }

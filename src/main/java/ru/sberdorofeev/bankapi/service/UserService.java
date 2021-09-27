@@ -14,16 +14,12 @@ import java.util.List;
 @Service
 public class UserService {
 
-    UserRepositoryImpl userRepository;
-    ModelMapper modelMapper;
+    private final UserRepositoryImpl userRepository;
+    private final ModelMapper modelMapper;
 
-    public boolean insertUser(UsersDto usersDto) {
+    public void insertUser(UsersDto usersDto) {
         UsersEntity usersEntity = modelMapper.map(usersDto, UsersEntity.class);
-        if (userRepository.insertData(usersEntity)) {
-            return true;
-        } else {
-            return false;
-        }
+        userRepository.insertData(usersEntity);
     }
 
     public UsersDto getUser(Long userId) {
