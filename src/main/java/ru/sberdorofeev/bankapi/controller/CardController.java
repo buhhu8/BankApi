@@ -20,10 +20,9 @@ public class CardController {
     public ResponseEntity<?> addNewCard (@PathVariable String  billNumber, @RequestBody CardDto cardDto){
         cardService.addNewCard(billNumber, cardDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
-
     }
 
-    @GetMapping("/{billNumber}")
+    @GetMapping("/billnumber/{billNumber}")
     public ResponseEntity<?> showAllCardsByBillNumber(@PathVariable String billNumber){
        return new ResponseEntity<>(cardService.showAllCardsByBillNumber(billNumber),HttpStatus.OK);
     }
@@ -34,4 +33,11 @@ public class CardController {
         cardService.increaseCardBalance(cardNumber,balance);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/cardnumber/{cardNumber}")
+    public ResponseEntity<?> getCardBalance(@PathVariable String cardNumber){
+        BigDecimal balance = cardService.getCardBalance(cardNumber);
+        return new ResponseEntity<>(balance, HttpStatus.OK);
+    }
+
 }

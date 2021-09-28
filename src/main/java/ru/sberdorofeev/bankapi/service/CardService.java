@@ -12,6 +12,7 @@ import ru.sberdorofeev.bankapi.repository.CardRepository;
 import javax.smartcardio.Card;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,7 @@ public class CardService {
 
     public void addNewCard(String billNumber, CardDto cardDto){
         CardEntity cardEntity = modelMapper.map(cardDto, CardEntity.class);
-        cardEntity.setCardNumber("4426" + " " + rnd() + " " + rnd() + " " + rnd());
+        cardEntity.setCardNumber("4426" + rnd() + rnd() + rnd());
         cardEntity.setExpDate(LocalDate.now().plusYears(3));
         cardEntity.setCcv((int)((Math.random()*999)+100));
         cardEntity.setCreateDate(LocalDate.now());
@@ -40,6 +41,10 @@ public class CardService {
 
     public void increaseCardBalance(String cardNumber, BigDecimal balance){
         cardRepository.increaseBalance(cardNumber,balance);
+    }
+
+    public BigDecimal getCardBalance(String cardNumber){
+        return cardRepository.checkBalance(cardNumber);
     }
 
     public int rnd(){

@@ -29,7 +29,7 @@ CREATE TABLE "INVOICE" (
                            "USER_ID" long
 );
 
-insert into INVOICE values ( default,'4213 2341 4276 3456 3432', '4107 0800 0023 1486 5748', '432010', now(), 'CREATE', 1);
+insert into INVOICE values ( default,'42132341427634563432', '41070800002314865748', '432010', now(), 'CREATE', 1);
 
 
 CREATE TABLE "CARD" (
@@ -42,7 +42,7 @@ CREATE TABLE "CARD" (
                         "INVOICE_ID" long
 );
 
-insert into CARD values ( default,'4213 2341 4276 3456', now(), 345, now(), 'ACTIVE', 1);
+insert into CARD values ( default,'4213234142763456', now(), 345, now(), 'ACTIVE', 1);
 
 
 CREATE TABLE "partner" (

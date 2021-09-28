@@ -25,44 +25,62 @@ public class CardRepositoryImpl implements CardRepository {
 
     @Override
     public void produceNewCard(String billNumber, CardEntity cardEntity) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-        InvoiceEntity invoiceEntity = invoiceRepository.getInvoiceByBill(billNumber);
-        cardEntity.setInvoiceEntity(invoiceEntity);
-        session.save(cardEntity);
-        tx.commit();
-        session.close();
+        try(Session session = sessionFactory.openSession()){
+            Transaction tx = session.beginTransaction();
+            InvoiceEntity invoiceEntity = invoiceRepository.getInvoiceByBill(billNumber);
+            cardEntity.setInvoiceEntity(invoiceEntity);
+            session.save(cardEntity);
+            tx.commit();
+        }
+        catch (Exception exc){
+
+        }
+
     }
 
     @Override
     public List<CardEntity> showAllCards(String billNumber) {
-        Session session = sessionFactory.openSession();
-        InvoiceEntity invoiceEntity = invoiceRepository.getInvoiceByBill(billNumber);
-
-        session.close();
-        return invoiceEntity.getCards();
-
+        try(Session session = sessionFactory.openSession()){
+            Transaction tx = session.beginTransaction();
+            InvoiceEntity invoiceEntity = invoiceRepository.getInvoiceByBill(billNumber);
+            tx.commit();
+            return invoiceEntity.getCards();
+        }
+        catch (Exception exc){
+            return new InvoiceEntity().getCards();
+        }
     }
 
     @Override
     public void increaseBalance(String cardNumber, BigDecimal balance) {
+        try(Session session = sessionFactory.openSession()){
+            Transaction tx = session.beginTransaction();
+            Query query = session.createQuery("from CardEntity where cardNumber = :paramName");
+            query.setParameter("paramName", cardNumber);
+            CardEntity cardEntity = (CardEntity) query.getSingleResult();
+            String billNumber = cardEntity.getInvoiceEntity().getBillNumber();
+            BigDecimal existedBalance = cardEntity.getInvoiceEntity().getBalance();
+            BigDecimal result = existedBalance.add(balance);
+            cardEntity.getInvoiceEntity().setBalance(result);
+            session.save(cardEntity);
+            tx.commit();
+        }
+        catch (Exception exc){
+
+        }
+    }
+
+    @Override
+    public BigDecimal checkBalance(String cardNumber) {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery("from CardEntity where cardNumber = :paramName");
         query.setParameter("paramName", cardNumber);
         CardEntity cardEntity = (CardEntity) query.getSingleResult();
         String billNumber = cardEntity.getInvoiceEntity().getBillNumber();
-        cardEntity.getInvoiceEntity().setBalance(balance);
-        session.save(cardEntity);
+        BigDecimal existedBalance = cardEntity.getInvoiceEntity().getBalance();
         tx.commit();
         session.close();
-
-
-
-    }
-
-    @Override
-    public BigDecimal checkBalance(String cardNumber) {
-        return null;
+        return existedBalance;
     }
 }

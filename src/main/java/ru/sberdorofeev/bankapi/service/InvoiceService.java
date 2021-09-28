@@ -19,8 +19,8 @@ public class InvoiceService {
 
     public void CreateNewBill(Long userId, InvoiceDto invoiceDto){
         InvoiceEntity invoiceEntity = modelMapper.map(invoiceDto, InvoiceEntity.class);
-        invoiceEntity.setBillNumber("4807" + " " + rnd() + " " + rnd() + " " + rnd() + " " + rnd());
-        invoiceEntity.setCorBill("4107 0800 0023 1486 5748");
+        invoiceEntity.setBillNumber("4807" + rnd() + rnd() + rnd() + rnd());
+        invoiceEntity.setCorBill("41070800002314865748");
         invoiceEntity.setBillCreateDate(new Timestamp(System.currentTimeMillis()));
         invoiceRepository.insertDataIntoInvoice(userId, invoiceEntity);
     }
