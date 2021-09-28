@@ -32,7 +32,8 @@ public class InvoiceService {
 
     public InvoiceDto getInvoiceById(Long id){
         InvoiceEntity invoiceEntity = invoiceRepository.getInvoiceById(id);
-        return modelMapper.map(invoiceEntity, InvoiceDto.class);
+        InvoiceDto dto =  modelMapper.map(invoiceEntity, InvoiceDto.class);
+        return dto;
     }
 
 

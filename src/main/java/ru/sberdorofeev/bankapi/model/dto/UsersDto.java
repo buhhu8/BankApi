@@ -15,6 +15,5 @@ public class UsersDto {
     private String passportSeries;
     private String passportNumber;
     private Timestamp createDateUser;
-    private List<InvoiceDto> invoiceDtoList;
 
 }

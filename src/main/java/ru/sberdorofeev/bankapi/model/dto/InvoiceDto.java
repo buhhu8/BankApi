@@ -2,6 +2,7 @@ package ru.sberdorofeev.bankapi.model.dto;
 
 import lombok.Data;
 import ru.sberdorofeev.bankapi.model.InvoiceBillEnum;
+import ru.sberdorofeev.bankapi.model.entity.UsersEntity;
 
 import javax.persistence.Column;
 import javax.persistence.EnumType;

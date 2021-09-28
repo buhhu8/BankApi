@@ -21,7 +21,6 @@ import java.sql.Timestamp;
 public class InvoiceRepositoryImpl implements InvoiceRepository {
 
     private final SessionFactory sessionFactory;
-    private final UserRepositoryImpl userRepository;
 
     @Override
     public void insertDataIntoInvoice(Long userId, InvoiceEntity invoiceEntity) {
@@ -30,9 +29,9 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
 
             UsersEntity usersEntity = session.get(UsersEntity.class,userId);
             invoiceEntity.setUser(usersEntity);
-            usersEntity.getInvoices().add(invoiceEntity);
+         //   usersEntity.getInvoices().add(invoiceEntity);
             session.save(invoiceEntity);
-     //       session.save(usersEntity);
+            session.save(usersEntity);
             tx.commit();
             session.close();
 
@@ -59,6 +58,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
         try(Session session = sessionFactory.openSession()){
             Query query = session.createQuery("from InvoiceEntity where id = :paramName");
             query.setParameter("paramName", id);
+            System.out.println(query.getSingleResult());
             return (InvoiceEntity) query.getSingleResult();
         }
         catch (Exception exc){

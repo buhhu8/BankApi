@@ -34,7 +34,7 @@ public class UsersEntity {
     @Column(name = "CREATE_DATA_USER")
     private Timestamp createDateUser;
 
-    @OneToMany(mappedBy = "user")
-    private List<InvoiceEntity> invoices;
+//    @OneToMany(mappedBy = "user")
+//    private List<InvoiceEntity> invoices;
 
 }

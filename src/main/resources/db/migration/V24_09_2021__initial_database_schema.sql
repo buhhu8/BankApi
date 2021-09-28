@@ -32,15 +32,18 @@ CREATE TABLE "INVOICE" (
 insert into INVOICE values ( default,'4213 2341 4276 3456 3432', '4107 0800 0023 1486 5748', '432010', now(), 'CREATE', 1);
 
 
-CREATE TABLE "card" (
-                        "id" long PRIMARY KEY auto_increment,
-                        "card_number" long UNIQUE,
-                        "exp_date" date,
-                        "ccv" int,
-                        "create_date" date,
-                        "active_status" varchar,
-                        "bill_id" int
+CREATE TABLE "CARD" (
+                        "ID" long PRIMARY KEY auto_increment,
+                        "CARD_NUMBER" varchar UNIQUE,
+                        "EXP_DATE" date,
+                        "CCV" int,
+                        "CREATE_DATE" date,
+                        "ACTIVE_STATUS" varchar,
+                        "INVOICE_ID" long
 );
+
+insert into CARD values ( default,'4213 2341 4276 3456', now(), 345, now(), 'ACTIVE', 1);
+
 
 CREATE TABLE "partner" (
                            "id" long auto_increment,
@@ -57,7 +60,7 @@ CREATE TABLE "CB" (
 
 ALTER TABLE "INVOICE" ADD FOREIGN KEY ("USER_ID") REFERENCES "USERS_INFO" ("ID");
 
-ALTER TABLE "card" ADD FOREIGN KEY ("bill_id") REFERENCES "INVOICE" ("ID");
+ALTER TABLE "CARD" ADD FOREIGN KEY ("INVOICE_ID") REFERENCES "INVOICE" ("ID");
 
 ALTER TABLE "CB" ADD FOREIGN KEY ("partner_cor_bill") REFERENCES "partner" ("partner_cor_bill");
 
@@ -71,11 +74,11 @@ CREATE INDEX ON "INVOICE" ("USER_ID");
 
 CREATE INDEX ON "INVOICE" ("BILL_CREATE_DATE");
 
-CREATE INDEX ON "card" ("bill_id");
+CREATE INDEX ON "CARD" ("INVOICE_ID");
 
-CREATE INDEX ON "card" ("create_date");
+CREATE INDEX ON "CARD" ("CREATE_DATE");
 
-CREATE INDEX ON "card" ("active_status");
+CREATE INDEX ON "CARD" ("CREATE_DATE");
 
 
 

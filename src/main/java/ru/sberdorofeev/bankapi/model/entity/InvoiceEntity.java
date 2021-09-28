@@ -1,6 +1,8 @@
 package ru.sberdorofeev.bankapi.model.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.UniqueElements;
@@ -9,8 +11,10 @@ import ru.sberdorofeev.bankapi.model.InvoiceBillEnum;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @DynamicUpdate
 @DynamicInsert
@@ -36,5 +40,8 @@ public class InvoiceEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ID")
     private UsersEntity user;
+
+    @OneToMany(mappedBy = "invoiceEntity", fetch = FetchType.EAGER)
+    private List<CardEntity> cards;
 
 }
