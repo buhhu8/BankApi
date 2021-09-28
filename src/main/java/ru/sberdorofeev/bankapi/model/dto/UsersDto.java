@@ -3,6 +3,7 @@ package ru.sberdorofeev.bankapi.model.dto;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 public class UsersDto {
@@ -14,5 +15,6 @@ public class UsersDto {
     private String passportSeries;
     private String passportNumber;
     private Timestamp createDateUser;
+    private List<InvoiceDto> invoiceDtoList;
 
 }

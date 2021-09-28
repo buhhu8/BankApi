@@ -18,5 +18,6 @@ public class InvoiceDto {
     private BigDecimal balance;
     private Timestamp billCreateDate;
     private InvoiceBillEnum type;
+    private UsersDto usersDto;
 
 }

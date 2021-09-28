@@ -29,6 +29,9 @@ CREATE TABLE "INVOICE" (
                            "USER_ID" long
 );
 
+insert into INVOICE values ( default,'4213 2341 4276 3456 3432', '4107 0800 0023 1486 5748', '432010', now(), 'CREATE', 1);
+
+
 CREATE TABLE "card" (
                         "id" long PRIMARY KEY auto_increment,
                         "card_number" long UNIQUE,
@@ -62,7 +65,7 @@ ALTER TABLE "CB" ADD FOREIGN KEY ("invoice_cor_bill") REFERENCES "INVOICE" ("BIL
 
 CREATE INDEX ON "USERS_INFO" ("CREATE_DATA_USER");
 
-CREATE UNIQUE INDEX ON "USERS_INFO" ("PASSPORT_SERIES","PASSPORT_NUMBER");
+-- CREATE UNIQUE INDEX ON "USERS_INFO" ("PASSPORT_SERIES","PASSPORT_NUMBER");
 
 CREATE INDEX ON "INVOICE" ("USER_ID");
 

@@ -10,15 +10,15 @@ import ru.sberdorofeev.bankapi.service.InvoiceService;
 
 @Data
 @RestController
-@RequestMapping("/api/v1/invoice")
+@RequestMapping("/api/v1/")
 public class InvoiceController {
 
     private final InvoiceService invoiceService;
 
-    @PostMapping
-    public ResponseEntity<?> createNewBill(@RequestBody InvoiceDto invoiceDto){
-        invoiceService.CreateNewBill(invoiceDto);
-        return new ResponseEntity<>(invoiceDto, HttpStatus.CREATED);
+    @PostMapping("/{userId}/invoice")
+    public ResponseEntity<?> createNewBill(@RequestBody InvoiceDto invoiceDto, @PathVariable Long userId){
+        invoiceService.CreateNewBill(userId, invoiceDto);
+        return new ResponseEntity<>("Invoice was succesfull created", HttpStatus.CREATED);
     }
 
     @GetMapping("/bill/{billNumber}")

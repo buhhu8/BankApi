@@ -1,6 +1,8 @@
 package ru.sberdorofeev.bankapi.model.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.UniqueElements;
 import ru.sberdorofeev.bankapi.model.InvoiceBillEnum;
 
@@ -10,6 +12,8 @@ import java.sql.Timestamp;
 
 @Data
 @Entity
+@DynamicUpdate
+@DynamicInsert
 @Table(name = "INVOICE")
 public class InvoiceEntity {
 
@@ -27,11 +31,10 @@ public class InvoiceEntity {
     @Column(name = "TYPE")
     @Enumerated(EnumType.STRING)
     private InvoiceBillEnum type;
-    @Column(name = "USER_ID")
-    private long userId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "USER_ID", nullable = false)
+//
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "USER_ID")
     private UsersEntity user;
 
 }

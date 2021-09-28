@@ -17,12 +17,12 @@ public class InvoiceService {
     private final ModelMapper modelMapper;
     private final InvoiceRepository invoiceRepository;
 
-    public void CreateNewBill(InvoiceDto invoiceDto){
+    public void CreateNewBill(Long userId, InvoiceDto invoiceDto){
         InvoiceEntity invoiceEntity = modelMapper.map(invoiceDto, InvoiceEntity.class);
         invoiceEntity.setBillNumber("4807" + " " + rnd() + " " + rnd() + " " + rnd() + " " + rnd());
         invoiceEntity.setCorBill("4107 0800 0023 1486 5748");
         invoiceEntity.setBillCreateDate(new Timestamp(System.currentTimeMillis()));
-        invoiceRepository.insertDataIntoInvoice(invoiceEntity);
+        invoiceRepository.insertDataIntoInvoice(userId, invoiceEntity);
     }
 
     public InvoiceDto getInvoiceByBill(String billNumber){

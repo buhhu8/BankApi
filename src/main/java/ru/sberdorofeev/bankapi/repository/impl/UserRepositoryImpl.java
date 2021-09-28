@@ -20,8 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
 
-    SessionFactory sessionFactory = HibernateUtils.getFactory();
-
+    private final SessionFactory sessionFactory;
 
     @Override
     public void insertData(UsersEntity entity) {
