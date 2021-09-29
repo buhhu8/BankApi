@@ -12,8 +12,5 @@ public class CardDto {
 
     private Long id;
     private String cardNumber;
-    private Timestamp expDate;
-    private LocalDate createDate;
-    private String activeStatus;
 
 }

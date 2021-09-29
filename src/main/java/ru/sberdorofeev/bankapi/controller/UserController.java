@@ -23,11 +23,6 @@ public class UserController {
         return new ResponseEntity<>("User was successful created",HttpStatus.CREATED);
     }
 
-    @GetMapping("/{userId}")
-    public UsersDto getUsers(@PathVariable Long userId){
-            return userService.getUser(userId);
-    }
-
     @GetMapping
     public Collection<UsersDto> getAllUsers(){
         return userService.getAllUsers();

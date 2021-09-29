@@ -12,7 +12,6 @@ import ru.sberdorofeev.bankapi.model.InvoiceBillEnum;
 import ru.sberdorofeev.bankapi.model.entity.InvoiceEntity;
 import ru.sberdorofeev.bankapi.model.entity.UsersEntity;
 import ru.sberdorofeev.bankapi.repository.InvoiceRepository;
-import ru.sberdorofeev.bankapi.utils.HibernateUtils;
 
 import java.sql.Timestamp;
 

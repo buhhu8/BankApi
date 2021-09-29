@@ -14,6 +14,7 @@ import ru.sberdorofeev.bankapi.repository.InvoiceRepository;
 
 import javax.swing.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -39,7 +40,7 @@ public class CardRepositoryImpl implements CardRepository {
     }
 
     @Override
-    public List<CardEntity> showAllCards(String billNumber) {
+    public List<CardEntity> getInfoById(String billNumber) {
         try(Session session = sessionFactory.openSession()){
             Transaction tx = session.beginTransaction();
             InvoiceEntity invoiceEntity = invoiceRepository.getInvoiceByBill(billNumber);
@@ -72,15 +73,48 @@ public class CardRepositoryImpl implements CardRepository {
 
     @Override
     public BigDecimal checkBalance(String cardNumber) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("from CardEntity where cardNumber = :paramName");
-        query.setParameter("paramName", cardNumber);
-        CardEntity cardEntity = (CardEntity) query.getSingleResult();
-        String billNumber = cardEntity.getInvoiceEntity().getBillNumber();
-        BigDecimal existedBalance = cardEntity.getInvoiceEntity().getBalance();
-        tx.commit();
-        session.close();
-        return existedBalance;
+        try(Session session = sessionFactory.openSession()){
+            Transaction tx = session.beginTransaction();
+            Query query = session.createQuery("from CardEntity where cardNumber = :paramName");
+            query.setParameter("paramName", cardNumber);
+            CardEntity cardEntity = (CardEntity) query.getSingleResult();
+            String billNumber = cardEntity.getInvoiceEntity().getBillNumber();
+            BigDecimal existedBalance = cardEntity.getInvoiceEntity().getBalance();
+            tx.commit();
+            return existedBalance;
+        }
+        catch (Exception exc){
+            return new BigDecimal(1);
+        }
+
+    }
+
+    @Override
+    public List<CardEntity> showAllCards() {
+        try(Session session = sessionFactory.openSession()){
+            Transaction tx = session.beginTransaction();
+            Query query = session.createQuery("FROM CardEntity");
+            List<CardEntity> allCards = query.list();
+            tx.commit();
+            return allCards;
+        }
+        catch (Exception exx){
+            return new ArrayList<>();
+        }
+
+    }
+
+    @Override
+    public CardEntity getInfoById(Long id) {
+        try(Session session = sessionFactory.openSession()){
+            Transaction tx = session.beginTransaction();
+            CardEntity entity = session.get(CardEntity.class,id);
+            tx.commit();
+            return entity;
+        }
+        catch (Exception exc){
+            return new CardEntity();
+        }
+
     }
 }

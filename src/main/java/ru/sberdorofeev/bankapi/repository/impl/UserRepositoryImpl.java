@@ -10,7 +10,7 @@ import ru.sberdorofeev.bankapi.exception.userExc.UserAlreadyExistsException;
 import ru.sberdorofeev.bankapi.exception.userExc.UserNotFoundException;
 import ru.sberdorofeev.bankapi.model.entity.UsersEntity;
 import ru.sberdorofeev.bankapi.repository.UserRepository;
-import ru.sberdorofeev.bankapi.utils.HibernateUtils;
+
 
 import java.sql.Timestamp;
 import java.util.ArrayList;

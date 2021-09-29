@@ -8,8 +8,11 @@ import java.util.List;
 public interface CardRepository {
 
     void produceNewCard(String invoiceNumber, CardEntity cardEntity);
-    List<CardEntity> showAllCards(String invoiceNumber);
+    List<CardEntity> getInfoById(String billNumber);
     void increaseBalance(String cardNumber, BigDecimal balance);
     BigDecimal checkBalance(String cardNumber);
+    List<CardEntity> showAllCards();
+    CardEntity getInfoById(Long id);
+
 
 }

@@ -10,7 +10,7 @@ import ru.sberdorofeev.bankapi.service.InvoiceService;
 
 @Data
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/bill/")
 public class InvoiceController {
 
     private final InvoiceService invoiceService;

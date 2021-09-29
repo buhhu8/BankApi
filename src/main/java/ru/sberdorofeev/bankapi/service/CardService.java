@@ -1,18 +1,15 @@
 package ru.sberdorofeev.bankapi.service;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import ru.sberdorofeev.bankapi.model.dto.CardDto;
+import ru.sberdorofeev.bankapi.model.dto.CardDtoInfo;
 import ru.sberdorofeev.bankapi.model.entity.CardEntity;
 import ru.sberdorofeev.bankapi.repository.CardRepository;
 
-import javax.smartcardio.Card;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +31,7 @@ public class CardService {
     }
 
     public List<CardDto> showAllCardsByBillNumber(String billNumber){
-        return cardRepository.showAllCards(billNumber)
+        return cardRepository.getInfoById(billNumber)
                 .stream().map(x -> modelMapper.map(x,CardDto.class))
                 .collect(Collectors.toList());
     }
@@ -45,6 +42,17 @@ public class CardService {
 
     public BigDecimal getCardBalance(String cardNumber){
         return cardRepository.checkBalance(cardNumber);
+    }
+
+    public List<CardDto> getAllCards(){
+        return cardRepository.showAllCards()
+                .stream().map(x-> modelMapper.map(x, CardDto.class))
+                .collect(Collectors.toList());
+    }
+
+    public CardDtoInfo getCardById(Long id){
+        CardEntity entity = cardRepository.getInfoById(id);
+        return modelMapper.map(entity, CardDtoInfo.class);
     }
 
     public int rnd(){
