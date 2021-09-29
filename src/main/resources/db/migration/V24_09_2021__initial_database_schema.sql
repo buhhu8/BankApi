@@ -13,11 +13,7 @@ insert into USERS_INFO values ( default,'Dima', 'Potemkin', 'Anatolievich', '410
 insert into USERS_INFO values ( default,'Alex', 'Suhov', 'Petrovich', '4123', '123456', now());
 insert into USERS_INFO values ( default,'Petr', 'Maksimov', 'Borisovich', '4134', '123456', now());
 insert into USERS_INFO values ( default,'Maksim', 'Petrov', 'Aleksandrovich', '4124', '123456', now());
-insert into USERS_INFO values ( default,'Nikolay', 'Bedniyi', 'Alekseevich', '4567', '123456', now());
-insert into USERS_INFO values ( default,'Denis', 'Parov', 'Stasovich', '4007', '123456', now());
-insert into USERS_INFO values ( default,'Anton', 'Volodin', 'Nikitovich', '4008', '123456', now());
-insert into USERS_INFO values ( default,'Andrei', 'Mishustin', 'Dmitrich', '4409', '123456', now());
-insert into USERS_INFO values ( default,'Anatoliy', 'Efremov', 'Sergeevich', '4308', '123456', now());
+
 
 CREATE TABLE "INVOICE" (
                            "ID" long auto_increment,
@@ -30,6 +26,10 @@ CREATE TABLE "INVOICE" (
 );
 
 insert into INVOICE values ( default,'42132341427634563432', '41070800002314865748', '432010', now(), 'CREATE', 1);
+insert into INVOICE values ( default,'42132341457623563432', '41070800002314865748', '32', now(), 'DELETE', 2);
+insert into INVOICE values ( default,'42132456414634563432', '41070800002314865748', '34000', now(), 'BLOCK', 3);
+insert into INVOICE values ( default,'42132341427634123432', '41070800002314865748', '123', now(), 'CREATE', 4);
+insert into INVOICE values ( default,'42137896427634563432', '41070800002314865748', '9829', now(), 'CREATE', 5);
 
 
 CREATE TABLE "CARD" (
@@ -42,8 +42,11 @@ CREATE TABLE "CARD" (
                         "INVOICE_ID" long
 );
 
-insert into CARD values ( default,'4213234142763456', now(), 345, now(), 'ACTIVE', 1);
-
+insert into CARD values ( default, '4217234356783456', '2023-12-12', 354,now(), 'ACTIVE',1);
+insert into CARD values ( default, '4217234312123135', '2023-12-12', 354,now(), 'ACTIVE',2);
+insert into CARD values ( default, '4211235266783456', '2023-12-12', 354,now(), 'ACTIVE',3);
+insert into CARD values ( default, '4217239872343456', '2023-12-12', 354,now(), 'ACTIVE',4);
+insert into CARD values ( default, '4217234562113456', '2023-12-12', 354,now(), 'ACTIVE',5);
 
 CREATE TABLE "partner" (
                            "id" long auto_increment,

@@ -1,4 +1,4 @@
-package ru.sberdorofeev.bankapi.model.dto;
+package ru.sberdorofeev.bankapi.model.dto.card;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,17 +1,20 @@
 package ru.sberdorofeev.bankapi.service;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import ru.sberdorofeev.bankapi.model.InvoiceBillEnum;
-import ru.sberdorofeev.bankapi.model.dto.InvoiceDto;
+import ru.sberdorofeev.bankapi.model.dto.invoice.InvoiceDto;
+import ru.sberdorofeev.bankapi.model.dto.invoice.InvoiceShowOnlyBillDto;
 import ru.sberdorofeev.bankapi.model.entity.InvoiceEntity;
 import ru.sberdorofeev.bankapi.repository.InvoiceRepository;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-@Data
+@RequiredArgsConstructor
 public class InvoiceService {
 
     private final ModelMapper modelMapper;
@@ -25,15 +28,15 @@ public class InvoiceService {
         invoiceRepository.insertDataIntoInvoice(userId, invoiceEntity);
     }
 
-    public InvoiceDto getInvoiceByBill(String billNumber){
-        InvoiceEntity invoiceEntity = invoiceRepository.getInvoiceByBill(billNumber);
-        return modelMapper.map(invoiceEntity, InvoiceDto.class);
-    }
 
     public InvoiceDto getInvoiceById(Long id){
-        InvoiceEntity invoiceEntity = invoiceRepository.getInvoiceById(id);
-        InvoiceDto dto =  modelMapper.map(invoiceEntity, InvoiceDto.class);
-        return dto;
+        return modelMapper.map(invoiceRepository.getInvoiceById(id),InvoiceDto.class);
+    }
+
+    public List<InvoiceShowOnlyBillDto> getAllInvoices(){
+        return invoiceRepository.getAllInvoices()
+                .stream().map(x-> modelMapper.map(x, InvoiceShowOnlyBillDto.class))
+                .collect(Collectors.toList());
     }
 
 

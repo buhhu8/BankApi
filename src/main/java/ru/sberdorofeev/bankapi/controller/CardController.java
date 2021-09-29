@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.sberdorofeev.bankapi.model.dto.CardDto;
-import ru.sberdorofeev.bankapi.model.dto.CardDtoBalance;
+import ru.sberdorofeev.bankapi.model.dto.card.CardDto;
+import ru.sberdorofeev.bankapi.model.dto.card.CardDtoBalance;
 import ru.sberdorofeev.bankapi.service.CardService;
 
 import java.math.BigDecimal;
@@ -23,7 +23,7 @@ public class CardController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/bill/{billNumber}}")
+    @GetMapping("/bill/{billNumber}")
     public ResponseEntity<?> showAllCardsByBillNumber(@PathVariable String billNumber){
        return new ResponseEntity<>(cardService.showAllCardsByBillNumber(billNumber),HttpStatus.OK);
     }

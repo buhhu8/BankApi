@@ -9,11 +9,14 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import ru.sberdorofeev.bankapi.exception.userExc.UserAlreadyExistsException;
 import ru.sberdorofeev.bankapi.model.InvoiceBillEnum;
+import ru.sberdorofeev.bankapi.model.entity.CardEntity;
 import ru.sberdorofeev.bankapi.model.entity.InvoiceEntity;
 import ru.sberdorofeev.bankapi.model.entity.UsersEntity;
 import ru.sberdorofeev.bankapi.repository.InvoiceRepository;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,20 +26,17 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
 
     @Override
     public void insertDataIntoInvoice(Long userId, InvoiceEntity invoiceEntity) {
-        Session session = sessionFactory.openSession();
+        try(Session session = sessionFactory.openSession()){
             Transaction tx = session.beginTransaction();
-
             UsersEntity usersEntity = session.get(UsersEntity.class,userId);
             invoiceEntity.setUser(usersEntity);
-         //   usersEntity.getInvoices().add(invoiceEntity);
             session.save(invoiceEntity);
             session.save(usersEntity);
             tx.commit();
-            session.close();
-
-//        catch (Exception exc){
-//            System.out.println("Some problem");
-//        }
+        }
+        catch (Exception exc){
+            System.out.println("Some problem");
+        }
     }
 
     @Override
@@ -67,7 +67,14 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     }
 
     @Override
-    public void increaseBalance(Long id) {
-
+    public List<InvoiceEntity> getAllInvoices() {
+        try (Session session = sessionFactory.openSession()) {
+            Query query = session.createQuery("FROM InvoiceEntity ");
+            List<InvoiceEntity> allBill = query.list();
+            return allBill;
+        } catch (Exception exc) {
+            return new ArrayList<>();
+        }
     }
+
 }

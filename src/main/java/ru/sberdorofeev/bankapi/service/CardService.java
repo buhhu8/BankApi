@@ -3,8 +3,8 @@ package ru.sberdorofeev.bankapi.service;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import ru.sberdorofeev.bankapi.model.dto.CardDto;
-import ru.sberdorofeev.bankapi.model.dto.CardDtoInfo;
+import ru.sberdorofeev.bankapi.model.dto.card.CardDto;
+import ru.sberdorofeev.bankapi.model.dto.card.CardDtoInfo;
 import ru.sberdorofeev.bankapi.model.entity.CardEntity;
 import ru.sberdorofeev.bankapi.repository.CardRepository;
 
@@ -31,7 +31,7 @@ public class CardService {
     }
 
     public List<CardDto> showAllCardsByBillNumber(String billNumber){
-        return cardRepository.getInfoById(billNumber)
+        return cardRepository.getInfoByBillNumber(billNumber)
                 .stream().map(x -> modelMapper.map(x,CardDto.class))
                 .collect(Collectors.toList());
     }

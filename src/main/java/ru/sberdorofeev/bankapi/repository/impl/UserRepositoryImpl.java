@@ -35,19 +35,6 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-
-    @Override
-    public UsersEntity getUsers(Long id) {
-        try(Session session = sessionFactory.openSession()){
-            Query query = session.createQuery("from UsersEntity where id = :paramName");
-            query.setParameter("paramName", id);
-            return (UsersEntity) query.getSingleResult();
-        }
-        catch (Exception exc){
-            throw new UserNotFoundException(id);
-        }
-    }
-
     @Override
     public List<UsersEntity> getAllUsers() {
         try(Session session = sessionFactory.openSession()) {

@@ -36,7 +36,6 @@ public class InvoiceEntity {
     @Enumerated(EnumType.STRING)
     private InvoiceBillEnum type;
 
-//
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ID")
     private UsersEntity user;
