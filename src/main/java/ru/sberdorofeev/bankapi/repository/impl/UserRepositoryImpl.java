@@ -6,13 +6,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
+import ru.sberdorofeev.bankapi.exception.OpenSessionException;
 import ru.sberdorofeev.bankapi.exception.userExc.UserAlreadyExistsException;
-import ru.sberdorofeev.bankapi.exception.userExc.UserNotFoundException;
 import ru.sberdorofeev.bankapi.model.entity.UsersEntity;
 import ru.sberdorofeev.bankapi.repository.UserRepository;
 
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,12 +25,11 @@ public class UserRepositoryImpl implements UserRepository {
     public void insertData(UsersEntity entity) {
         try(Session session = sessionFactory.openSession()){
             Transaction tx = session.beginTransaction();
-            entity.setCreateDateUser(new Timestamp(System.currentTimeMillis()));
             session.save(entity);
             tx.commit();
         }
         catch (Exception exc){
-            throw new UserAlreadyExistsException(entity);
+           // throw new UserAlreadyExistsException(entity);
         }
     }
 
@@ -43,7 +41,7 @@ public class UserRepositoryImpl implements UserRepository {
             return list;
         }
         catch (Exception exc){
-            return new ArrayList<>();
+            throw new OpenSessionException("Something goes wrong. Try again");
         }
     }
 }

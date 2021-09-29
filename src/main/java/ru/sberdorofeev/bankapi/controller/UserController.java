@@ -8,6 +8,7 @@ import ru.sberdorofeev.bankapi.model.dto.UsersDto;
 import ru.sberdorofeev.bankapi.model.entity.UsersEntity;
 import ru.sberdorofeev.bankapi.service.UserService;
 
+import javax.validation.Valid;
 import java.util.Collection;
 
 @RestController
@@ -18,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<?> createNewUser(@RequestBody UsersDto dto){
+    public ResponseEntity<?> createNewUser(@RequestBody @Valid UsersDto dto){
         userService.insertUser(dto);
         return new ResponseEntity<>("User was successful created",HttpStatus.CREATED);
     }

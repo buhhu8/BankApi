@@ -5,8 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
+import ru.sberdorofeev.bankapi.exception.OpenSessionException;
+import ru.sberdorofeev.bankapi.exception.invoiceExc.InvoiceAlreadyExistsException;
 import ru.sberdorofeev.bankapi.exception.userExc.UserAlreadyExistsException;
 import ru.sberdorofeev.bankapi.model.InvoiceBillEnum;
 import ru.sberdorofeev.bankapi.model.entity.CardEntity;
@@ -34,8 +37,11 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
             session.save(usersEntity);
             tx.commit();
         }
+        catch (ConstraintViolationException exc){
+            throw new InvoiceAlreadyExistsException(invoiceEntity);
+        }
         catch (Exception exc){
-            System.out.println("Some problem");
+            throw new OpenSessionException("Something goes wrong. Try again");
         }
     }
 
@@ -47,8 +53,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
             return (InvoiceEntity) query.getSingleResult();
         }
         catch (Exception exc){
-            System.out.println("Some problem");
-            return new InvoiceEntity();
+            throw new OpenSessionException("Something goes wrong. Try again");
         }
     }
 
@@ -57,12 +62,10 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
         try(Session session = sessionFactory.openSession()){
             Query query = session.createQuery("from InvoiceEntity where id = :paramName");
             query.setParameter("paramName", id);
-            System.out.println(query.getSingleResult());
             return (InvoiceEntity) query.getSingleResult();
         }
         catch (Exception exc){
-            System.out.println("Some problem");
-            return new InvoiceEntity();
+            throw new OpenSessionException("Something goes wrong. Try again");
         }
     }
 
@@ -73,7 +76,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
             List<InvoiceEntity> allBill = query.list();
             return allBill;
         } catch (Exception exc) {
-            return new ArrayList<>();
+            throw new OpenSessionException("Something goes wrong. Try again");
         }
     }
 

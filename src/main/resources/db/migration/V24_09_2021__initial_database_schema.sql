@@ -1,11 +1,11 @@
 CREATE TABLE if not exists "USERS_INFO" (
                          "ID" long  PRIMARY KEY auto_increment,
-                         "FIRST_NAME" varchar,
-                         "LAST_NAME" varchar,
+                         "FIRST_NAME" varchar not null,
+                         "LAST_NAME" varchar not null,
                          "MIDDLE_NAME" varchar,
-                         "PASSPORT_SERIES" varchar,
-                         "PASSPORT_NUMBER" varchar,
-                         "CREATE_DATA_USER" timestamp
+                         "PASSPORT_SERIES" varchar not null,
+                         "PASSPORT_NUMBER" varchar not null,
+                         "CREATE_DATA_USER" date
 );
 
 insert into USERS_INFO values ( default,'Denis', 'Dorofeev', 'Aleksandrovich', '4100', '123456', now());
@@ -17,11 +17,11 @@ insert into USERS_INFO values ( default,'Maksim', 'Petrov', 'Aleksandrovich', '4
 
 CREATE TABLE "INVOICE" (
                            "ID" long auto_increment,
-                           "BILL_NUMBER" varchar(250) primary key,
-                           "COR_BILL" varchar(250),
-                           "BALANCE" double,
-                           "BILL_CREATE_DATE" timestamp,
-                           "TYPE" varchar,
+                           "BILL_NUMBER" varchar primary key,
+                           "COR_BILL" varchar,
+                           "BALANCE" double not null,
+                           "BILL_CREATE_DATE" date,
+                           "TYPE" varchar not null,
                            "USER_ID" long
 );
 
@@ -48,30 +48,14 @@ insert into CARD values ( default, '4211235266783456', '2023-12-12', 354,now(), 
 insert into CARD values ( default, '4217239872343456', '2023-12-12', 354,now(), 'ACTIVE',4);
 insert into CARD values ( default, '4217234562113456', '2023-12-12', 354,now(), 'ACTIVE',5);
 
-CREATE TABLE "partner" (
-                           "id" long auto_increment,
-                           "partner_bill_number" varchar UNIQUE,
-                           "partner_cor_bill" varchar PRIMARY KEY,
-                           "balance" double
-);
-
-CREATE TABLE "CB" (
-                      "partner_cor_bill" varchar,
-                      "invoice_cor_bill" varchar,
-                      PRIMARY KEY ("partner_cor_bill", "invoice_cor_bill")
-);
 
 ALTER TABLE "INVOICE" ADD FOREIGN KEY ("USER_ID") REFERENCES "USERS_INFO" ("ID");
 
 ALTER TABLE "CARD" ADD FOREIGN KEY ("INVOICE_ID") REFERENCES "INVOICE" ("ID");
 
-ALTER TABLE "CB" ADD FOREIGN KEY ("partner_cor_bill") REFERENCES "partner" ("partner_cor_bill");
-
-ALTER TABLE "CB" ADD FOREIGN KEY ("invoice_cor_bill") REFERENCES "INVOICE" ("BILL_NUMBER");
-
 CREATE INDEX ON "USERS_INFO" ("CREATE_DATA_USER");
 
--- CREATE UNIQUE INDEX ON "USERS_INFO" ("PASSPORT_SERIES","PASSPORT_NUMBER");
+CREATE UNIQUE INDEX ON "USERS_INFO" ("PASSPORT_SERIES","PASSPORT_NUMBER");
 
 CREATE INDEX ON "INVOICE" ("USER_ID");
 
@@ -82,6 +66,8 @@ CREATE INDEX ON "CARD" ("INVOICE_ID");
 CREATE INDEX ON "CARD" ("CREATE_DATE");
 
 CREATE INDEX ON "CARD" ("CREATE_DATE");
+
+CREATE UNIQUE INDEX ON "INVOICE" ("BILL_NUMBER");
 
 
 

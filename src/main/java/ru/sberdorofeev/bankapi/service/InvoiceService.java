@@ -10,6 +10,7 @@ import ru.sberdorofeev.bankapi.model.entity.InvoiceEntity;
 import ru.sberdorofeev.bankapi.repository.InvoiceRepository;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,14 +24,17 @@ public class InvoiceService {
     public void CreateNewBill(Long userId, InvoiceDto invoiceDto){
         InvoiceEntity invoiceEntity = modelMapper.map(invoiceDto, InvoiceEntity.class);
         invoiceEntity.setBillNumber("4807" + rnd() + rnd() + rnd() + rnd());
+       // invoiceEntity.setBillNumber("42137896427634563432");
         invoiceEntity.setCorBill("41070800002314865748");
-        invoiceEntity.setBillCreateDate(new Timestamp(System.currentTimeMillis()));
+        invoiceEntity.setBillCreateDate(LocalDate.now());
         invoiceRepository.insertDataIntoInvoice(userId, invoiceEntity);
     }
 
 
     public InvoiceDto getInvoiceById(Long id){
-        return modelMapper.map(invoiceRepository.getInvoiceById(id),InvoiceDto.class);
+        InvoiceEntity invoiceEntity = invoiceRepository.getInvoiceById(id);
+        InvoiceDto invoiceDto = modelMapper.map(invoiceEntity,InvoiceDto.class);
+        return invoiceDto;
     }
 
     public List<InvoiceShowOnlyBillDto> getAllInvoices(){

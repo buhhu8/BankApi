@@ -7,6 +7,8 @@ import ru.sberdorofeev.bankapi.model.dto.UsersDto;
 import ru.sberdorofeev.bankapi.model.entity.UsersEntity;
 import ru.sberdorofeev.bankapi.repository.impl.UserRepositoryImpl;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +21,7 @@ public class UserService {
 
     public void insertUser(UsersDto usersDto) {
         UsersEntity usersEntity = modelMapper.map(usersDto, UsersEntity.class);
+        usersEntity.setCreateDateUser(LocalDate.now());
         userRepository.insertData(usersEntity);
     }
 

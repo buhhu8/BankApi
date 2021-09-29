@@ -4,8 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
+import ru.sberdorofeev.bankapi.exception.OpenSessionException;
+import ru.sberdorofeev.bankapi.exception.cardExc.CardAlreadyExistsException;
+import ru.sberdorofeev.bankapi.exception.invoiceExc.InvoiceAlreadyExistsException;
+import ru.sberdorofeev.bankapi.exception.userExc.UserAlreadyExistsException;
 import ru.sberdorofeev.bankapi.model.entity.CardEntity;
 import ru.sberdorofeev.bankapi.model.entity.InvoiceEntity;
 import ru.sberdorofeev.bankapi.repository.CardRepository;
@@ -31,8 +36,11 @@ public class CardRepositoryImpl implements CardRepository {
             session.save(cardEntity);
             tx.commit();
         }
+        catch (ConstraintViolationException exc){
+            throw new CardAlreadyExistsException(cardEntity);
+        }
         catch (Exception exc){
-
+            throw new OpenSessionException("Something goes wrong. Try again");
         }
 
     }
@@ -44,7 +52,7 @@ public class CardRepositoryImpl implements CardRepository {
             return invoiceEntity.getCards();
         }
         catch (Exception exc){
-            return new InvoiceEntity().getCards();
+            throw new OpenSessionException("Something goes wrong. Try again");
         }
     }
 
@@ -63,7 +71,7 @@ public class CardRepositoryImpl implements CardRepository {
             tx.commit();
         }
         catch (Exception exc){
-
+            throw new OpenSessionException("Something goes wrong. Try again");
         }
     }
 
@@ -78,7 +86,7 @@ public class CardRepositoryImpl implements CardRepository {
             return existedBalance;
         }
         catch (Exception exc){
-            return new BigDecimal(1);
+            throw new OpenSessionException("Something goes wrong. Try again");
         }
 
     }
@@ -92,7 +100,7 @@ public class CardRepositoryImpl implements CardRepository {
             return allCards;
         }
         catch (Exception exx){
-            return new ArrayList<>();
+            throw new OpenSessionException("Something goes wrong. Try again");
         }
 
     }
@@ -103,9 +111,22 @@ public class CardRepositoryImpl implements CardRepository {
             CardEntity entity = session.get(CardEntity.class,id);
             return entity;
         }
-        catch (Exception exc){
-            return new CardEntity();
+        catch (IllegalArgumentException exc){
+            throw new UserAlreadyExistsException("Card doesn't exist");
         }
 
+    }
+
+    @Override
+    public CardEntity getCardByCardNumber(String cardNumber) {
+        try(Session session = sessionFactory.openSession()){
+            Query query = session.createQuery("from CardEntity where cardNumber = :paramName");
+            query.setParameter("paramName", cardNumber);
+            CardEntity cardEntity = (CardEntity) query.getSingleResult();
+            return cardEntity;
+        }
+        catch (RuntimeException exc){
+            throw new OpenSessionException("Card doesn't exist");
+        }
     }
 }

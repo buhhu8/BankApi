@@ -22,7 +22,9 @@ public class CardService {
 
     public void addNewCard(String billNumber, CardDto cardDto){
         CardEntity cardEntity = modelMapper.map(cardDto, CardEntity.class);
-        cardEntity.setCardNumber("4426" + rnd() + rnd() + rnd());
+       // cardEntity.setCardNumber("4426" + rnd() + rnd() + rnd());
+        String number = "4426278018784597";
+        cardEntity.setCardNumber("4426278018784597");
         cardEntity.setExpDate(LocalDate.now().plusYears(3));
         cardEntity.setCcv((int)((Math.random()*999)+100));
         cardEntity.setCreateDate(LocalDate.now());
@@ -53,6 +55,11 @@ public class CardService {
     public CardDtoInfo getCardById(Long id){
         CardEntity entity = cardRepository.getInfoById(id);
         return modelMapper.map(entity, CardDtoInfo.class);
+    }
+
+    public CardDto getCardByNumber(String number){
+        CardEntity entity = cardRepository.getCardByCardNumber(number);
+        return modelMapper.map(entity,CardDto.class);
     }
 
     public int rnd(){

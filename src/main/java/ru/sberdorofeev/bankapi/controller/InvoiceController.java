@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.sberdorofeev.bankapi.model.dto.invoice.InvoiceDto;
 import ru.sberdorofeev.bankapi.service.InvoiceService;
 
+import javax.validation.Valid;
+
 @Data
 @RestController
 @RequestMapping("/api/v1/bill/")

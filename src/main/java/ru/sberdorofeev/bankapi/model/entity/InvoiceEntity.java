@@ -9,8 +9,11 @@ import org.hibernate.validator.constraints.UniqueElements;
 import ru.sberdorofeev.bankapi.model.InvoiceBillEnum;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -24,14 +27,18 @@ public class InvoiceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "BILL_NUMBER")
     private String billNumber;
     @Column(name = "COR_BILL")
     private String corBill;
+
     @Column(name = "BALANCE")
     private BigDecimal balance;
+
     @Column(name = "BILL_CREATE_DATE")
-    private Timestamp billCreateDate;
+    private LocalDate billCreateDate;
+
     @Column(name = "TYPE")
     @Enumerated(EnumType.STRING)
     private InvoiceBillEnum type;

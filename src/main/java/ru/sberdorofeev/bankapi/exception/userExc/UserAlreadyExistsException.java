@@ -5,8 +5,12 @@ import ru.sberdorofeev.bankapi.model.entity.UsersEntity;
 
 public class UserAlreadyExistsException extends RuntimeException {
 
-    public UserAlreadyExistsException(UsersEntity usersEntity) {
-        super("User: " + usersEntity.getFirstName() + " " + usersEntity.getLastName() + " with passport: "
-                        + usersEntity.getPassportSeries() + " " + usersEntity.getPassportNumber() + " already exists" );
+//    public UserAlreadyExistsException(UsersEntity usersEntity) {
+//        super("User: " + usersEntity.getFirstName() + " " + usersEntity.getLastName() + " with passport: "
+//                        + usersEntity.getPassportSeries() + " " + usersEntity.getPassportNumber() + " already exists" );
+//    }
+
+    public UserAlreadyExistsException(String message){
+        super(message);
     }
 }
