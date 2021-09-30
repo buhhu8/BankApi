@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 import ru.sberdorofeev.bankapi.model.dto.card.CardBalanceDto;
 import ru.sberdorofeev.bankapi.model.dto.card.CardDto;
@@ -24,9 +26,8 @@ public class CardControllerIT {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void testCreateNewCard() {
+    public void testCreateNewCardSuccess() {
         CardDto dto = new CardDto();
-        dto.setCardNumber("42132341427634563437");
 
         ResponseEntity<?> response = restTemplate.postForEntity(
                 "/api/v1/cards/42132341427634563432",
@@ -38,7 +39,20 @@ public class CardControllerIT {
     }
 
     @Test
-    public void testGetAllCardsByBillNumber(){
+    public void testCreateNewCardFailure(){
+        CardDto dto = new CardDto();
+
+        ResponseEntity<?> response = restTemplate.postForEntity(
+                "/api/v1/cards/421212",
+                dto,
+                Object.class
+        );
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void testGetAllCardsByBillNumberSuccess(){
         ResponseEntity<List<CardDto>> response = restTemplate.exchange(
                 "/api/v1/cards/bill/42132341427634563432",
                 HttpMethod.GET,
@@ -51,28 +65,27 @@ public class CardControllerIT {
         assertNotNull(cards);
     }
 
-//    @Test
-//    public void increaseBalanceByCardNumber(){
-//        ResponseEntity<CardBalanceDto> response = restTemplate.getForEntity(
-//                "/api/v1/cards/balance/4217234312123135",
-//                CardBalanceDto.class);
-//
-//        BigDecimal balance = response.getBody().getBalance();
-//        CardBalanceDto cardBalanceDto = new CardBalanceDto();
-//        cardBalanceDto.setBalance(balance);
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        HttpEntity<CardBalanceDto> requestUpdate = new HttpEntity<CardBalanceDto>(cardBalanceDto);
-//
-//        response = restTemplate.exchange(
-//                "/api/v1/cards/balance/4217234312123135",
-//                HttpMethod.PUT,
-//                requestUpdate,
-//                CardBalanceDto.class);
-//
-//        assertNotEquals(balance,response.getBody().getBalance());
-//    }
+    @Test
+    public void increaseBalanceByCardNumber(){
+        ResponseEntity<CardBalanceDto> response = restTemplate.getForEntity(
+                "/api/v1/cards/balance/4217234312123135",
+                CardBalanceDto.class);
+
+        BigDecimal balance = response.getBody().getBalance();
+        CardBalanceDto cardBalanceDto = new CardBalanceDto();
+        cardBalanceDto.setBalance(balance);
+
+        restTemplate.put(
+                "/api/v1/cards/balance/4217234312123135",
+                cardBalanceDto);
+
+        response = restTemplate.getForEntity(
+                "/api/v1/cards/balance/4217234312123135",
+                CardBalanceDto.class);
+
+        assertNotEquals(balance,response.getBody().getBalance());
+    }
+
 
     @Test
     public void testGetBalanceByCard() {

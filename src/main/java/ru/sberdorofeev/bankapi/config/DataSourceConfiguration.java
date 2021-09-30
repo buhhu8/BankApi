@@ -79,8 +79,6 @@ public class DataSourceConfiguration {
 
     private Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
-//        hibernateProperties.setProperty(
-//                "hibernate.hbm2ddl.auto", "create-drop");
         hibernateProperties.setProperty(
                 "hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         hibernateProperties.getProperty(

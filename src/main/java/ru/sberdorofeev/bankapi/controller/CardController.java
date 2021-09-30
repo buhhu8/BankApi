@@ -28,7 +28,7 @@ public class CardController {
         return new ResponseEntity<>(cardService.showAllCardsByBillNumber(billNumber), HttpStatus.OK);
     }
 
-    @PutMapping("/{cardNumber}")
+    @PutMapping("/balance/{cardNumber}")
     public ResponseEntity<?> increaseBalanceByCardNumber(@PathVariable String cardNumber,
                                                          @RequestBody CardBalanceDto dtoBalance){
         cardService.increaseCardBalance(cardNumber, dtoBalance.getBalance());
