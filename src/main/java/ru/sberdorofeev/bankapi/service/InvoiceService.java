@@ -3,6 +3,7 @@ package ru.sberdorofeev.bankapi.service;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import ru.sberdorofeev.bankapi.exception.EntityNotFoundException;
 import ru.sberdorofeev.bankapi.model.dto.invoice.InvoiceDto;
 import ru.sberdorofeev.bankapi.model.dto.invoice.InvoiceShowOnlyBillDto;
 import ru.sberdorofeev.bankapi.model.entity.InvoiceEntity;
@@ -20,17 +21,28 @@ public class InvoiceService {
     private final InvoiceRepository invoiceRepository;
 
     public void createNewBill(Long userId, InvoiceDto invoiceDto) {
-        InvoiceEntity invoiceEntity = modelMapper.map(invoiceDto, InvoiceEntity.class);
-        invoiceEntity.setBillNumber("4807" + rnd() + rnd() + rnd() + rnd());
-        // invoiceEntity.setBillNumber("42137896427634563432");
-        invoiceEntity.setCorBill("41070800002314865748");
-        invoiceEntity.setBillCreateDate(LocalDate.now());
-        invoiceRepository.insertDataIntoInvoice(userId, invoiceEntity);
+        try{
+            InvoiceEntity invoiceEntity = modelMapper.map(invoiceDto, InvoiceEntity.class);
+            invoiceEntity.setBillNumber("4807" + rnd() + rnd() + rnd() + rnd());
+            invoiceEntity.setCorBill("41070800002314865748");
+            invoiceEntity.setBillCreateDate(LocalDate.now());
+            invoiceRepository.insertInvoice(userId, invoiceEntity);
+        }
+        catch (RuntimeException exc){
+            throw new EntityNotFoundException("User with passed id: " + userId + " doesn't exist");
+        }
+
     }
 
     public InvoiceDto getInvoiceById(Long id) {
-        InvoiceEntity invoiceEntity = invoiceRepository.getInvoiceById(id);
-        return modelMapper.map(invoiceEntity, InvoiceDto.class);
+        try{
+            InvoiceEntity invoiceEntity = invoiceRepository.getInvoiceById(id);
+            return modelMapper.map(invoiceEntity, InvoiceDto.class);
+        }
+        catch (RuntimeException exc){
+            throw new EntityNotFoundException("Invoice with passed id: " + id + " doesn't exist");
+        }
+
     }
 
     public List<InvoiceShowOnlyBillDto> getAllInvoices() {

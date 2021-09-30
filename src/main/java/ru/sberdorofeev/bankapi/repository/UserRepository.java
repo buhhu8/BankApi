@@ -12,14 +12,14 @@ public interface UserRepository {
      *
      * @param entity our entity to add into db
      * @void
-     * @throws org.dins.exception.UserNotFoundException if no user with such ID
+     * @throws ru.sberdorofeev.bankapi.exception.OpenSessionException if session couldn't open
      */
     void insertUser(UsersEntity entity);
     /**
      * Return all users
      *
      * @return list of users
-     * @throws org.dins.exception.UserNotFoundException if no user with such ID
+     * @throws ru.sberdorofeev.bankapi.exception.OpenSessionException if session couldn't open
      */
     List<UsersEntity> getAllUsers();
 

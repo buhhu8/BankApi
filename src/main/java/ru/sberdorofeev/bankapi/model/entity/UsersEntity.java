@@ -1,17 +1,11 @@
 package ru.sberdorofeev.bankapi.model.entity;
 
 import lombok.Data;
-import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity

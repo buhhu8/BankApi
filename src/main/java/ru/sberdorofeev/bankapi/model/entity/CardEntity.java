@@ -1,13 +1,11 @@
 package ru.sberdorofeev.bankapi.model.entity;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import ru.sberdorofeev.bankapi.model.CardEnum;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Getter

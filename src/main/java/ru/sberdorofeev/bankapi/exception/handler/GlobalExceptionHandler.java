@@ -12,10 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.sberdorofeev.bankapi.exception.EntityNotFoundException;
-import ru.sberdorofeev.bankapi.exception.OpenSessionException;
-import ru.sberdorofeev.bankapi.exception.cardExc.CardAlreadyExistsException;
-import ru.sberdorofeev.bankapi.exception.invoiceExc.InvoiceAlreadyExistsException;
-import ru.sberdorofeev.bankapi.exception.userExc.UserAlreadyExistsException;
 import ru.sberdorofeev.bankapi.model.dto.ErrorMessageDto;
 
 import java.util.HashMap;
@@ -39,33 +35,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, errorMessageDto, headers, status, request);
     }
 
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<Object> handleUserAlreadyExistsException(UserAlreadyExistsException ex,
-                                                                   WebRequest request){
-        ErrorMessageDto errorMessageDto = new ErrorMessageDto(HttpStatus.CONFLICT.value(), ex.getMessage());
-        return handleExceptionInternal(ex, errorMessageDto, new HttpHeaders(), HttpStatus.CONFLICT, request);
-    }
-
-    @ExceptionHandler(InvoiceAlreadyExistsException.class)
-    public ResponseEntity<Object> handleInvoiceAlreadyExistsException(InvoiceAlreadyExistsException ex,
-                                                                   WebRequest request){
-        ErrorMessageDto errorMessageDto = new ErrorMessageDto(HttpStatus.CONFLICT.value(), ex.getMessage());
-        return handleExceptionInternal(ex, errorMessageDto, new HttpHeaders(), HttpStatus.CONFLICT, request);
-    }
-
-    @ExceptionHandler(OpenSessionException.class)
-    public ResponseEntity<Object> handleOpenSessionException(InvoiceAlreadyExistsException ex,
-                                                                      WebRequest request){
-        ErrorMessageDto errorMessageDto = new ErrorMessageDto(HttpStatus.CONFLICT.value(), ex.getMessage());
-        return handleExceptionInternal(ex, errorMessageDto, new HttpHeaders(), HttpStatus.CONFLICT, request);
-    }
-
-    @ExceptionHandler(CardAlreadyExistsException.class)
-    public ResponseEntity<Object> handleCardAlreadyExistsException(InvoiceAlreadyExistsException ex,
-                                                             WebRequest request){
-        ErrorMessageDto errorMessageDto = new ErrorMessageDto(HttpStatus.CONFLICT.value(), ex.getMessage());
-        return handleExceptionInternal(ex, errorMessageDto, new HttpHeaders(), HttpStatus.CONFLICT, request);
-    }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorMessageDto> handleEntityNotFoundException(EntityNotFoundException ex,

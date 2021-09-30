@@ -4,9 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 public class UsersDto {

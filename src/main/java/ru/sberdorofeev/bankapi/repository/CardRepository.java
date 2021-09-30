@@ -15,7 +15,7 @@ public interface CardRepository {
      * @void
      * @throws ru.sberdorofeev.bankapi.exception.cardExc.CardAlreadyExistsException if no user with such ID
      */
-    void produceNewCard(String invoiceNumber, CardEntity cardEntity);
+    void createNewCard(String invoiceNumber, CardEntity cardEntity);
 
     /**
      * Increase balance for card
@@ -23,7 +23,7 @@ public interface CardRepository {
      * @param cardNumber the card's number of card to find
      * @param balance increase card balance on this meaning
      * @void
-     * @throws org.dins.exception.UserNotFoundException if no user with such ID
+     * @throws ru.sberdorofeev.bankapi.exception.OpenSessionException if session couldn't open
      */
     void increaseBalance(String cardNumber, BigDecimal balance);
     /**
@@ -31,22 +31,22 @@ public interface CardRepository {
      *
      * @param cardNumber the card's number of card to find
      * @return bigDecimal balance
-     * @throws org.dins.exception.UserNotFoundException if no user with such ID
+     * @throws ru.sberdorofeev.bankapi.exception.OpenSessionException if session couldn't open
      */
     BigDecimal checkBalance(String cardNumber);
     /**
      * Return list of all cards
      *
      * @return list of cards
-     * @throws org.dins.exception.UserNotFoundException if no user with such ID
+     * @throws ru.sberdorofeev.bankapi.exception.OpenSessionException if session couldn't open
      */
-    List<CardEntity> showAllCards();
+    List<CardEntity> getAllCards();
     /**
      * Return card by id
      *
      * @param id the indentifier of card to find
      * @return card entity
-     * @throws org.dins.exception.UserNotFoundException if no user with such ID
+     * @throws ru.sberdorofeev.bankapi.exception.OpenSessionException if session couldn't open
      */
     CardEntity getInfoById(Long id);
     /**
@@ -54,7 +54,7 @@ public interface CardRepository {
      *
      * @param cardNumber the card's number of card to find
      * @return card entity
-     * @throws org.dins.exception.UserNotFoundException if no user with such ID
+     * @throws ru.sberdorofeev.bankapi.exception.OpenSessionException if session couldn't open
      */
     CardEntity getCardByCardNumber(String cardNumber);
 

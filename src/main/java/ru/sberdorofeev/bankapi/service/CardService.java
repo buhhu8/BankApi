@@ -25,26 +25,40 @@ public class CardService {
     private final InvoiceRepository invoiceRepository;
 
     public void addNewCard(String billNumber, CardDto cardDto) {
-        CardEntity cardEntity = modelMapper.map(cardDto, CardEntity.class);
-        // cardEntity.setCardNumber("4426" + rnd() + rnd() + rnd());
-        String number = "4426278018784597";
-        cardEntity.setCardNumber("4426278018784597");
-        cardEntity.setExpDate(LocalDate.now().plusYears(3));
-        cardEntity.setCcv((int) ((Math.random() * 999) + 100));
-        cardEntity.setCreateDate(LocalDate.now());
-        cardRepository.produceNewCard(billNumber, cardEntity);
+        try{
+            CardEntity cardEntity = modelMapper.map(cardDto, CardEntity.class);
+            cardEntity.setCardNumber("4426" + rnd() + rnd() + rnd());
+            cardEntity.setExpDate(LocalDate.now().plusYears(3));
+            cardEntity.setCcv((int) ((Math.random() * 999) + 100));
+            cardEntity.setCreateDate(LocalDate.now());
+            cardRepository.createNewCard(billNumber, cardEntity);
+        }
+        catch (RuntimeException exc){
+            throw new EntityNotFoundException("Bill: " + billNumber + " doesn't exist");
+        }
     }
 
     public List<CardDto> showAllCardsByBillNumber(String billNumber){
-        InvoiceEntity invoiceEntity = invoiceRepository.getInvoiceByBill(billNumber);
-        return invoiceEntity.getCards()
-                .stream()
-                .map(x -> modelMapper.map(x,CardDto.class))
-                .collect(Collectors.toList());
+        try{
+            InvoiceEntity invoiceEntity = invoiceRepository.getInvoiceByBill(billNumber);
+            return invoiceEntity.getCards()
+                    .stream()
+                    .map(x -> modelMapper.map(x,CardDto.class))
+                    .collect(Collectors.toList());
+        }
+        catch (RuntimeException exc){
+            throw new EntityNotFoundException("Bill: " + billNumber + " doesn't exist");
+        }
+
     }
 
     public void increaseCardBalance(String cardNumber, BigDecimal balance) {
-        cardRepository.increaseBalance(cardNumber, balance);
+        try{
+            cardRepository.increaseBalance(cardNumber, balance);
+        }
+        catch (RuntimeException exc){
+            throw new EntityNotFoundException("Card number: " + cardNumber + " doesn't exist");
+        }
     }
 
     public BigDecimal getCardBalance(String cardNumber){
@@ -52,23 +66,20 @@ public class CardService {
     }
 
     public List<CardDto> getAllCards(){
-        return cardRepository.showAllCards()
+        return cardRepository.getAllCards()
                 .stream()
                 .map(x-> modelMapper.map(x, CardDto.class))
                 .collect(Collectors.toList());
     }
 
     public CardInfoDto getCardById(Long id){
-        CardEntity entity = cardRepository.getInfoById(id);
-        if (entity == null) {
+        try{
+            CardEntity entity = cardRepository.getInfoById(id);
+            return modelMapper.map(entity, CardInfoDto.class);
+        }
+        catch (RuntimeException exc){
             throw new EntityNotFoundException("Card with passed ID " + id + " doesn't exist");
         }
-        return modelMapper.map(entity, CardInfoDto.class);
-    }
-
-    public CardDto getCardByNumber(String number){
-        CardEntity entity = cardRepository.getCardByCardNumber(number);
-        return modelMapper.map(entity,CardDto.class);
     }
 
     public int rnd(){

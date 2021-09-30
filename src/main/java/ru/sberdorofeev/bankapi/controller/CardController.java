@@ -18,13 +18,13 @@ public class CardController {
     private final CardService cardService;
 
     @PostMapping("/{billNumber}")
-    public ResponseEntity<?> addNewCard (@PathVariable String billNumber, @RequestBody CardDto cardDto){
+    public ResponseEntity<?> createNewCard(@PathVariable String billNumber, @RequestBody CardDto cardDto){
         cardService.addNewCard(billNumber, cardDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/bill/{billNumber}")
-    public ResponseEntity<?> showAllCardsByBillNumber(@PathVariable String billNumber) {
+    public ResponseEntity<?> getAllCardsByBillNumber(@PathVariable String billNumber) {
         return new ResponseEntity<>(cardService.showAllCardsByBillNumber(billNumber), HttpStatus.OK);
     }
 

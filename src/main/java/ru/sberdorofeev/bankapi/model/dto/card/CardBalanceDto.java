@@ -11,10 +11,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class CardBalanceDto {
 
-    private Long id;
     private BigDecimal balance;
 
     public CardBalanceDto(BigDecimal balance) {
         this.balance = balance;
     }
 }
+
