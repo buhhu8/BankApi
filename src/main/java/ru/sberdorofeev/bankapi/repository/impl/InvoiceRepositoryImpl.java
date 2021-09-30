@@ -59,12 +59,11 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
 
     @Override
     public InvoiceEntity getInvoiceById(Long id) {
-        try(Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             Query query = session.createQuery("from InvoiceEntity where id = :paramName");
             query.setParameter("paramName", id);
             return (InvoiceEntity) query.getSingleResult();
-        }
-        catch (Exception exc){
+        } catch (Exception exc) {
             throw new OpenSessionException("Something goes wrong. Try again");
         }
     }

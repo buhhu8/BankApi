@@ -7,6 +7,7 @@ import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.sberdorofeev.bankapi.exception.OpenSessionException;
 import ru.sberdorofeev.bankapi.exception.cardExc.CardAlreadyExistsException;
 import ru.sberdorofeev.bankapi.exception.invoiceExc.InvoiceAlreadyExistsException;
@@ -29,44 +30,34 @@ public class CardRepositoryImpl implements CardRepository {
 
     @Override
     public void produceNewCard(String billNumber, CardEntity cardEntity) {
-        try(Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
             InvoiceEntity invoiceEntity = invoiceRepository.getInvoiceByBill(billNumber);
             cardEntity.setInvoiceEntity(invoiceEntity);
             session.save(cardEntity);
             tx.commit();
-        }
-        catch (ConstraintViolationException exc){
+        } catch (ConstraintViolationException exc) {
             throw new CardAlreadyExistsException(cardEntity);
-        }
-        catch (Exception exc){
+        } catch (Exception exc) {
             throw new OpenSessionException("Something goes wrong. Try again");
         }
 
-    }
-
-    @Override
-    public List<CardEntity> getInfoByBillNumber(String billNumber) {
-        try(Session session = sessionFactory.openSession()){
-            InvoiceEntity invoiceEntity = invoiceRepository.getInvoiceByBill(billNumber);
-            return invoiceEntity.getCards();
-        }
-        catch (Exception exc){
-            throw new OpenSessionException("Something goes wrong. Try again");
-        }
     }
 
     @Override
     public void increaseBalance(String cardNumber, BigDecimal balance) {
         try(Session session = sessionFactory.openSession()){
             Transaction tx = session.beginTransaction();
-            Query query = session.createQuery("from CardEntity where cardNumber = :paramName");
-            query.setParameter("paramName", cardNumber);
-            CardEntity cardEntity = (CardEntity) query.getSingleResult();
-            String billNumber = cardEntity.getInvoiceEntity().getBillNumber();
+            CardEntity cardEntity  = session
+                    .createQuery("from CardEntity where cardNumber = :cardNumber", CardEntity.class)
+                    .setParameter("cardNumber", cardNumber)
+                    .getSingleResult();
+
             BigDecimal existedBalance = cardEntity.getInvoiceEntity().getBalance();
             BigDecimal result = existedBalance.add(balance);
+
             cardEntity.getInvoiceEntity().setBalance(result);
+
             session.save(cardEntity);
             tx.commit();
         }
@@ -86,7 +77,7 @@ public class CardRepositoryImpl implements CardRepository {
             return existedBalance;
         }
         catch (Exception exc){
-            throw new OpenSessionException("Something goes wrong. Try again");
+            throw new RuntimeException(exc);
         }
 
     }
@@ -94,10 +85,8 @@ public class CardRepositoryImpl implements CardRepository {
     @Override
     public List<CardEntity> showAllCards() {
         try(Session session = sessionFactory.openSession()){
-            Query query = session.createQuery("FROM CardEntity ");
-            List<CardEntity> allCards = query.list();
-            System.out.println(allCards.get(0));
-            return allCards;
+            return session.createQuery("from CardEntity ", CardEntity.class)
+                    .getResultList();
         }
         catch (Exception exx){
             throw new OpenSessionException("Something goes wrong. Try again");
@@ -107,14 +96,9 @@ public class CardRepositoryImpl implements CardRepository {
 
     @Override
     public CardEntity getInfoById(Long id) {
-        try(Session session = sessionFactory.openSession()){
-            CardEntity entity = session.get(CardEntity.class,id);
-            return entity;
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(CardEntity.class, id);
         }
-        catch (IllegalArgumentException exc){
-            throw new UserAlreadyExistsException("Card doesn't exist");
-        }
-
     }
 
     @Override

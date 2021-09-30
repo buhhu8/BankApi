@@ -18,15 +18,6 @@ public interface CardRepository {
     void produceNewCard(String invoiceNumber, CardEntity cardEntity);
 
     /**
-     * Return list of all cards for one bill
-     *
-     * @param billNumber the bill's number of bill to find
-     * @return list of Cards
-     * @throws org.dins.exception.UserNotFoundException if no user with such ID
-     */
-    List<CardEntity> getInfoByBillNumber(String billNumber);
-
-    /**
      * Increase balance for card
      *
      * @param cardNumber the card's number of card to find

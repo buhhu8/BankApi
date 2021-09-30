@@ -1,14 +1,17 @@
 package ru.sberdorofeev.bankapi.exception.handler;
 
+import org.hibernate.HibernateException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import ru.sberdorofeev.bankapi.exception.EntityNotFoundException;
 import ru.sberdorofeev.bankapi.exception.OpenSessionException;
 import ru.sberdorofeev.bankapi.exception.cardExc.CardAlreadyExistsException;
 import ru.sberdorofeev.bankapi.exception.invoiceExc.InvoiceAlreadyExistsException;
@@ -22,7 +25,6 @@ import java.util.Map;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
-    @SuppressWarnings("NullableProblems")
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status,
                                                                   WebRequest request) {
@@ -33,7 +35,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
 
-        return handleExceptionInternal(ex, errors, headers, status, request);
+        ErrorMessageDto errorMessageDto = new ErrorMessageDto(status.value(), "Invalid data", errors);
+        return handleExceptionInternal(ex, errorMessageDto, headers, status, request);
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
@@ -64,5 +67,27 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, errorMessageDto, new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorMessageDto> handleEntityNotFoundException(EntityNotFoundException ex,
+                                                                WebRequest request) {
+        ErrorMessageDto errorMessageDto = new ErrorMessageDto(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+        return new ResponseEntity<>(errorMessageDto, HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        ErrorMessageDto errorMessageDto = new ErrorMessageDto(status.value(), "Couldn't deserialize incoming request body");
+        return handleExceptionInternal(ex, errorMessageDto, headers, status, request);
+    }
+
+    @ExceptionHandler(HibernateException.class)
+    public ResponseEntity<ErrorMessageDto> handleHibernateException(HibernateException ex,
+                                                                         WebRequest request) {
+        ErrorMessageDto errorMessageDto = new ErrorMessageDto(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(errorMessageDto, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 }

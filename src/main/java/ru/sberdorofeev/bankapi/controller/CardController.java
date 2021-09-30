@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sberdorofeev.bankapi.model.dto.card.CardDto;
-import ru.sberdorofeev.bankapi.model.dto.card.CardDtoBalance;
+import ru.sberdorofeev.bankapi.model.dto.card.CardBalanceDto;
 import ru.sberdorofeev.bankapi.service.CardService;
 
 import java.math.BigDecimal;
@@ -18,32 +18,32 @@ public class CardController {
     private final CardService cardService;
 
     @PostMapping("/{billNumber}")
-    public ResponseEntity<?> addNewCard (@PathVariable String  billNumber, @RequestBody CardDto cardDto){
+    public ResponseEntity<?> addNewCard (@PathVariable String billNumber, @RequestBody CardDto cardDto){
         cardService.addNewCard(billNumber, cardDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/bill/{billNumber}")
-    public ResponseEntity<?> showAllCardsByBillNumber(@PathVariable String billNumber){
-       return new ResponseEntity<>(cardService.showAllCardsByBillNumber(billNumber),HttpStatus.OK);
+    public ResponseEntity<?> showAllCardsByBillNumber(@PathVariable String billNumber) {
+        return new ResponseEntity<>(cardService.showAllCardsByBillNumber(billNumber), HttpStatus.OK);
     }
 
     @PutMapping("/{cardNumber}")
-    public ResponseEntity<?> increaseCardBalanceByNumber(@PathVariable String cardNumber,
-                                                         @RequestBody CardDtoBalance dtoBalance){
-        cardService.increaseCardBalance(cardNumber,dtoBalance.getBalance());
+    public ResponseEntity<?> increaseBalanceByCardNumber(@PathVariable String cardNumber,
+                                                         @RequestBody CardBalanceDto dtoBalance){
+        cardService.increaseCardBalance(cardNumber, dtoBalance.getBalance());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/balance/{cardNumber}")
     public ResponseEntity<?> getCardBalance(@PathVariable String cardNumber){
         BigDecimal balance = cardService.getCardBalance(cardNumber);
-        return new ResponseEntity<>(balance, HttpStatus.OK);
+        return new ResponseEntity<>(new CardBalanceDto(balance), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<?> getAllCards(){
-        return new ResponseEntity<>(cardService.getAllCards(),HttpStatus.OK);
+        return new ResponseEntity<>(cardService.getAllCards(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

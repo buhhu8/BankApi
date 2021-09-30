@@ -7,12 +7,9 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import ru.sberdorofeev.bankapi.exception.OpenSessionException;
-import ru.sberdorofeev.bankapi.exception.userExc.UserAlreadyExistsException;
 import ru.sberdorofeev.bankapi.model.entity.UsersEntity;
 import ru.sberdorofeev.bankapi.repository.UserRepository;
 
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -22,14 +19,13 @@ public class UserRepositoryImpl implements UserRepository {
     private final SessionFactory sessionFactory;
 
     @Override
-    public void insertData(UsersEntity entity) {
-        try(Session session = sessionFactory.openSession()){
+    public void insertUser(UsersEntity entity) {
+        try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
             session.save(entity);
             tx.commit();
-        }
-        catch (Exception exc){
-           // throw new UserAlreadyExistsException(entity);
+        } catch (Exception exc) {
+            // throw new UserAlreadyExistsException(entity);
         }
     }
 

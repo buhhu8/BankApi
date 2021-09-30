@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @RequiredArgsConstructor
-public class CardDtoInfo {
+public class CardInfoDto {
 
     private Long id;
     private String cardNumber;

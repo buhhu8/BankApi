@@ -1,18 +1,24 @@
 package ru.sberdorofeev.bankapi.model.entity;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.validator.constraints.UniqueElements;
 import ru.sberdorofeev.bankapi.model.InvoiceBillEnum;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -30,6 +36,7 @@ public class InvoiceEntity {
 
     @Column(name = "BILL_NUMBER")
     private String billNumber;
+
     @Column(name = "COR_BILL")
     private String corBill;
 

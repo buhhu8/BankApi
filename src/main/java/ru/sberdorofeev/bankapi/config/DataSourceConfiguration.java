@@ -2,9 +2,9 @@ package ru.sberdorofeev.bankapi.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.MigrationVersion;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,9 +29,9 @@ public class DataSourceConfiguration {
     @Value("${spring.datasource.driver-class-name}")
     private String driverClass;
     @Value("${migration.version:}")
-
     private String migrationVersion;
 
+    @Bean
     public DataSource dataSource() {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(url);
@@ -39,12 +39,12 @@ public class DataSourceConfiguration {
         hikariConfig.setPassword(password);
         hikariConfig.setDriverClassName(driverClass);
 
+        hikariConfig.setMinimumIdle(5);
         hikariConfig.setMaximumPoolSize(15);
-        hikariConfig.setPoolName("lk-uk-connection-pool");
+        hikariConfig.setPoolName("bank-api-connection-pool");
 
         return new HikariDataSource(hikariConfig);
     }
-
 
     @Bean(initMethod = "migrate") // flyway.migrate();
     public Flyway flyway(DataSource dataSource) {
@@ -61,9 +61,9 @@ public class DataSourceConfiguration {
     }
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory() {
+    public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setDataSource(dataSource);
         sessionFactory.setPackagesToScan("ru.sberdorofeev.bankapi.model");
         sessionFactory.setHibernateProperties(hibernateProperties());
 
@@ -71,14 +71,13 @@ public class DataSourceConfiguration {
     }
 
     @Bean
-    public PlatformTransactionManager hibernateTransactionManager() {
-        HibernateTransactionManager transactionManager
-                = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory().getObject());
+    public PlatformTransactionManager hibernateTransactionManager(SessionFactory sessionFactory) {
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory);
         return transactionManager;
     }
 
-    private final Properties hibernateProperties() {
+    private Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
 //        hibernateProperties.setProperty(
 //                "hibernate.hbm2ddl.auto", "create-drop");

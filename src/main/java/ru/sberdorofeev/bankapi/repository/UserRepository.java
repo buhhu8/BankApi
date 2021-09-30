@@ -14,7 +14,7 @@ public interface UserRepository {
      * @void
      * @throws org.dins.exception.UserNotFoundException if no user with such ID
      */
-    void insertData(UsersEntity entity);
+    void insertUser(UsersEntity entity);
     /**
      * Return all users
      *
