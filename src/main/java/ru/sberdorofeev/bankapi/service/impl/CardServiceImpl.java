@@ -38,7 +38,7 @@ public class CardServiceImpl implements CardService {
             cardRepository.createNewCard(billNumber, cardEntity);
         }
         catch (RuntimeException exc){
-            log.error(exc.getMessage());
+            log.error(exc.getMessage(), exc);
             throw new EntityNotFoundException("Bill: " + billNumber + " doesn't exist");
         }
     }
@@ -53,7 +53,7 @@ public class CardServiceImpl implements CardService {
                     .collect(Collectors.toList());
         }
         catch (RuntimeException exc){
-            log.error(exc.getMessage());
+            log.error(exc.getMessage(),exc);
             throw new EntityNotFoundException("Bill: " + billNumber + " doesn't exist");
         }
 
@@ -65,7 +65,7 @@ public class CardServiceImpl implements CardService {
             cardRepository.increaseBalance(cardNumber, balance);
         }
         catch (RuntimeException exc){
-            log.error(exc.getMessage());
+            log.error(exc.getMessage(),exc);
             throw new EntityNotFoundException("Card number: " + cardNumber + " doesn't exist");
         }
     }
@@ -76,7 +76,7 @@ public class CardServiceImpl implements CardService {
             return cardRepository.checkBalance(cardNumber);
         }
         catch (RuntimeException exc){
-            log.error(exc.getMessage());
+            log.error(exc.getMessage(),exc);
             throw new EntityNotFoundException("Card number: " + cardNumber + " doesn't exist");
         }
     }
@@ -96,7 +96,7 @@ public class CardServiceImpl implements CardService {
             return modelMapper.map(entity, CardInfoDto.class);
         }
         catch (RuntimeException exc){
-            log.error(exc.getMessage());
+            log.error(exc.getMessage(),exc);
             throw new EntityNotFoundException("Card with passed ID " + id + " doesn't exist");
         }
     }

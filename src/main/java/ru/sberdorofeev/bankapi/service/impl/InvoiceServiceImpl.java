@@ -33,7 +33,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             invoiceRepository.insertInvoice(userId, invoiceEntity);
         }
         catch (RuntimeException exc){
-            log.error(exc.getMessage());
+            log.error(exc.getMessage(),exc);
             throw new EntityNotFoundException("User with passed id: " + userId + " doesn't exist");
         }
 
@@ -46,7 +46,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             return modelMapper.map(invoiceEntity, InvoiceDto.class);
         }
         catch (RuntimeException exc){
-            log.error(exc.getMessage());
+            log.error(exc.getMessage(),exc);
             throw new EntityNotFoundException("Invoice with passed id: " + id + " doesn't exist");
         }
 
