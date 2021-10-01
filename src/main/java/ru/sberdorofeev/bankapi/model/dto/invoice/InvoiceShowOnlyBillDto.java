@@ -8,6 +8,8 @@ import java.time.LocalDate;
 
 @Data
 public class InvoiceShowOnlyBillDto {
+
+    private long version;
     private Long id;
     private String billNumber;
     private String corBill;

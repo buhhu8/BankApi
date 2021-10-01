@@ -15,6 +15,9 @@ import java.time.LocalDate;
 @Table(name = "CARD")
 public class CardEntity {
 
+    @Version
+    private long version;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

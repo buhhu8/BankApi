@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Data
 public class UsersDto {
 
+    private long version;
     private Long id;
 
     @NotEmpty(message = "User firstName couldn't be empty")

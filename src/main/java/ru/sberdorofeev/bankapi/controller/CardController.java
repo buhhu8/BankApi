@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sberdorofeev.bankapi.model.dto.card.CardDto;
 import ru.sberdorofeev.bankapi.model.dto.card.CardBalanceDto;
-import ru.sberdorofeev.bankapi.service.CardService;
+import ru.sberdorofeev.bankapi.service.impl.CardServiceImpl;
 
 import java.math.BigDecimal;
 
@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @RequestMapping("/api/v1/cards")
 public class CardController {
 
-    private final CardService cardService;
+    private final CardServiceImpl cardService;
 
     @PostMapping("/{billNumber}")
     public ResponseEntity<?> createNewCard(@PathVariable String billNumber, @RequestBody CardDto cardDto){

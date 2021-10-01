@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.sberdorofeev.bankapi.model.dto.invoice.InvoiceDto;
-import ru.sberdorofeev.bankapi.service.InvoiceService;
+import ru.sberdorofeev.bankapi.service.impl.InvoiceServiceImpl;
 
 import javax.validation.Valid;
 
@@ -19,23 +19,23 @@ import javax.validation.Valid;
 @RequestMapping("/api/v1/bill")
 public class InvoiceController {
 
-    private final InvoiceService invoiceService;
+    private final InvoiceServiceImpl invoiceServiceImpl;
 
     @PostMapping("{userId}")
     public ResponseEntity<?> createNewBill(@PathVariable Long userId,
                                            @RequestBody @Valid InvoiceDto invoiceDto){
-        invoiceService.createNewBill(userId, invoiceDto);
+        invoiceServiceImpl.createNewBill(userId, invoiceDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<?> getInvoiceById(@PathVariable Long id){
-        return new ResponseEntity<>(invoiceService.getInvoiceById(id),HttpStatus.OK);
+        return new ResponseEntity<>(invoiceServiceImpl.getInvoiceById(id),HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<?> getAllInvoice(){
-        return new ResponseEntity<>(invoiceService.getAllInvoices(),HttpStatus.OK);
+        return new ResponseEntity<>(invoiceServiceImpl.getAllInvoices(),HttpStatus.OK);
     }
 
 }

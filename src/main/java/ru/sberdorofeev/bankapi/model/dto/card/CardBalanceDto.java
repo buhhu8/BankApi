@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class CardBalanceDto {
 
+    private long version;
     private BigDecimal balance;
 
     public CardBalanceDto(BigDecimal balance) {

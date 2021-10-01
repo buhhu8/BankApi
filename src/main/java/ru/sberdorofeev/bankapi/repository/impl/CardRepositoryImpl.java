@@ -1,9 +1,7 @@
 package ru.sberdorofeev.bankapi.repository.impl;
 
-import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import ru.sberdorofeev.bankapi.model.entity.CardEntity;
@@ -15,38 +13,38 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
-@RequiredArgsConstructor
-public class CardRepositoryImpl implements CardRepository {
+public class CardRepositoryImpl extends AbstractRepository implements CardRepository {
 
     private final SessionFactory sessionFactory;
     private final InvoiceRepository invoiceRepository;
 
+    public CardRepositoryImpl(SessionFactory factory, SessionFactory sessionFactory, InvoiceRepository invoiceRepository) {
+        super(factory);
+        this.sessionFactory = sessionFactory;
+        this.invoiceRepository = invoiceRepository;
+    }
+
+
     @Override
     public void createNewCard(String billNumber, CardEntity cardEntity) {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction tx = session.beginTransaction();
+        runInTransaction(x ->{
             InvoiceEntity invoiceEntity = invoiceRepository.getInvoiceByBill(billNumber);
             cardEntity.setInvoiceEntity(invoiceEntity);
-            session.save(cardEntity);
-            tx.commit();
-        }
+            x.save(cardEntity);});
     }
 
     @Override
     public void increaseBalance(String cardNumber, BigDecimal balance) {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction tx = session.beginTransaction();
-            CardEntity cardEntity = session
+        runInTransaction(x ->{
+            CardEntity cardEntity = x
                     .createQuery("from CardEntity where cardNumber = :cardNumber", CardEntity.class)
                     .setParameter("cardNumber", cardNumber)
                     .getSingleResult();
-
             BigDecimal existedBalance = cardEntity.getInvoiceEntity().getBalance();
             BigDecimal result = existedBalance.add(balance);
             cardEntity.getInvoiceEntity().setBalance(result);
-            session.save(cardEntity);
-            tx.commit();
-        }
+            x.save(cardEntity);
+        });
     }
 
     @Override

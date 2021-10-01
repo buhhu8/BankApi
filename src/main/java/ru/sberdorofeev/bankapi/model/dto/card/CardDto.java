@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class CardDto {
 
+    private long version;
     private Long id;
     private String cardNumber;
 

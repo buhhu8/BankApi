@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.sberdorofeev.bankapi.model.dto.UsersDto;
-import ru.sberdorofeev.bankapi.service.UserService;
+import ru.sberdorofeev.bankapi.service.impl.UserServiceImpl;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -19,17 +19,17 @@ import java.util.Collection;
 @RequestMapping("/api/v1/users")
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @PostMapping
     public ResponseEntity<?> createNewUser(@RequestBody @Valid UsersDto dto){
-        userService.insertUser(dto);
+        userServiceImpl.insertUser(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping
     public Collection<UsersDto> getAllUsers(){
-        return userService.getAllUsers();
+        return userServiceImpl.getAllUsers();
     }
 
 }

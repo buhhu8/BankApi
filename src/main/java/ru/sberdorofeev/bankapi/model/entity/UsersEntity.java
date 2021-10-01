@@ -14,6 +14,9 @@ import java.time.LocalDate;
 @Table(name = "USERS_INFO")
 public class UsersEntity {
 
+    @Version
+    private long version;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
