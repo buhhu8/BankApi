@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.sberdorofeev.bankapi.model.dto.card.CardDto;
 import ru.sberdorofeev.bankapi.model.dto.card.CardBalanceDto;
-import ru.sberdorofeev.bankapi.service.impl.CardServiceImpl;
+import ru.sberdorofeev.bankapi.model.dto.card.CardDto;
+import ru.sberdorofeev.bankapi.service.CardService;
 
 import java.math.BigDecimal;
 
@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @Slf4j
 public class CardController {
 
-    private final CardServiceImpl cardService;
+    private final CardService cardService;
 
     @PostMapping("/{billNumber}")
     public ResponseEntity<?> createNewCard(@PathVariable String billNumber, @RequestBody CardDto cardDto){

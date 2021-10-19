@@ -25,7 +25,6 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
             UsersEntity usersEntity = session.get(UsersEntity.class,userId);
             invoiceEntity.setUser(usersEntity);
             session.save(invoiceEntity);
-            session.save(usersEntity);
             tx.commit();
         }
     }

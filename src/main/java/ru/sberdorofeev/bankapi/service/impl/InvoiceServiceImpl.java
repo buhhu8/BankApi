@@ -27,7 +27,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     public void createNewBill(Long userId, InvoiceDto invoiceDto) {
         try{
             InvoiceEntity invoiceEntity = modelMapper.map(invoiceDto, InvoiceEntity.class);
-            invoiceEntity.setBillNumber("4807" + rnd() + rnd() + rnd() + rnd());
+            invoiceEntity.setBillNumber("4807" + getRandomNumber() + getRandomNumber() + getRandomNumber() + getRandomNumber());
             invoiceEntity.setCorBill("41070800002314865748");
             invoiceEntity.setBillCreateDate(LocalDate.now());
             invoiceRepository.insertInvoice(userId, invoiceEntity);
@@ -59,7 +59,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .collect(Collectors.toList());
     }
 
-    public int rnd() {
+    public int getRandomNumber() {
         return (int) ((Math.random() * 9999) + 1000);
     }
 

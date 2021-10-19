@@ -31,7 +31,7 @@ public class CardServiceImpl implements CardService {
     public void addNewCard(String billNumber, CardDto cardDto) {
         try{
             CardEntity cardEntity = modelMapper.map(cardDto, CardEntity.class);
-            cardEntity.setCardNumber("4426" + rnd() + rnd() + rnd());
+            cardEntity.setCardNumber("4426" + getRandomNumber() + getRandomNumber() + getRandomNumber());
             cardEntity.setExpDate(LocalDate.now().plusYears(3));
             cardEntity.setCcv((int) ((Math.random() * 999) + 100));
             cardEntity.setCreateDate(LocalDate.now());
@@ -101,7 +101,7 @@ public class CardServiceImpl implements CardService {
         }
     }
 
-    public int rnd(){
+    public int getRandomNumber(){
         return (int)((Math.random() * 9999) + 1000);
     }
 }
